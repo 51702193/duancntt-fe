@@ -1,0 +1,179 @@
+.home-banner {
+    .search-banner {
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+            .title {
+                font-size: 13px;
+                font-weight: 400;
+                line-height: 20px;
+                color: #707070;
+            }
+        }
+    }
+}
+
+.ant-row-rtl #components-layout-demo-top-side-2 .logo {
+    float: right;
+    margin: 16px 0 16px 24px;
+}
+
+.site-layout-background {
+    background: #fff;
+}
+
+.top-nav-header {
+    .ant-menu-item.ant-menu-item-only-child {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.hot-news {
+    background-color: rgb(208 147 47 / 20%);
+    padding: 20px 10vh;
+    margin: 50px 20px;
+
+    &__title {
+        font-weight: bold;
+        font-size: 40px;
+        line-height: 47px;
+        letter-spacing: 0.03em;
+        color: #162b75;
+        font-family: "GaramondPremrPro";
+        margin: 0;
+        margin-bottom: 20px;
+    }
+
+    &__content {
+        max-width: 506px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 20px;
+        color: #222222;
+        margin-bottom: 30px;
+
+        &__carousel {
+            background: #fff;
+            padding: 40px 30px;
+            position: relative;
+
+            .slogan {
+                font-style: normal;
+                font-weight: 600;
+                font-size: 13px;
+                line-height: 150%;
+                color: #222222;
+                margin-bottom: 10px;
+            }
+            .pj-title {
+                font-style: normal;
+                font-weight: bold;
+                font-size: 30px;
+                line-height: 120%;
+                color: #dca447;
+                margin: 0;
+                margin-bottom: 20px;
+            }
+            .desc {
+                font-weight: normal;
+                font-size: 13px;
+                line-height: 20px;
+                color: #707070;
+            }
+            .link {
+                position: absolute;
+                bottom: 40px;
+                left: 30px;
+                font-weight: 600;
+                font-size: 13px;
+                line-height: 150%;
+                color: #162b75;
+            }
+        }
+    }
+}
+
+.dailynews-banner {
+    background: #f0f2f5;
+    padding: 20px 10vh;
+    margin: 50px 20px;
+
+    &__top {
+        .title {
+            font-size: 28px;
+            line-height: 38px;
+            text-transform: none;
+            color: #2d373f;
+            margin-bottom: 20px;
+        }
+    }
+    &__body {
+        .home-product {
+            .home-product-bound {
+                display: flex;
+                flex-direction: column;
+                padding: 8px 12px 10px 12px;
+                border-top: none;
+                box-sizing: border-box;
+                border-radius: 0 0 4px 4px;
+
+                .product-title {
+                    display: -webkit-box;
+                    height: 40px;
+                    overflow: hidden;
+                    -webkit-line-clamp: 2;
+                    position: relative;
+                    text-overflow: ellipsis;
+                    white-space: normal;
+                    word-wrap: break-word;
+                    -webkit-box-orient: vertical;
+                    color: #004e7f;
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 20px;
+                    margin-bottom: 4px;
+                }
+
+                .product-price {
+                    font-style: normal;
+                    font-weight: bold;
+                    font-size: 14px;
+                    line-height: 20px;
+                    color: #2c2f36;
+                    width: auto;
+                    float: left;
+                    margin-right: 8px;
+                }
+
+                .product-address {
+                    display: inline-block;
+                    width: 100%;
+                    font-family: Roboto;
+                    font-style: normal;
+                    font-weight: normal;
+                    font-size: 14px;
+                    line-height: 20px;
+                    margin: 4px 0 6px 0;
+                    color: #2c2f36;
+                }
+
+                .product-date {
+                    font-style: normal;
+                    font-weight: normal;
+                    font-size: 14px;
+                    line-height: 20px;
+                    color: #747c87;
+                    cursor: default;
+                    position: relative;
+                    display: inline-block;
+                }
+            }
+        }
+    }
+}
