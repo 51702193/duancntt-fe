@@ -61,7 +61,7 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
   };
 
   //   const { isLoading, data } = useFetch(`${BE_API_DEFAULT_ROUTE}/tintuc/top`);
-  const { isLoading, data } = { isLoading: true, data: [] };
+  const { isLoading, data } = { isLoading: true, data: undefined };
   return (
     <Content>
       <div className="home-banner" style={{ position: "relative" }}>
