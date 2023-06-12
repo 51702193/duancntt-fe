@@ -17,15 +17,15 @@ import { memo, useEffect, useState } from "react";
 //   getWardsmainPage,
 // } from "redux/selectors";
 
-import locationList from "../../locationList.json";
-
 import "./styles.scss";
 import HotNews from "./HotNews";
+import useAPI from "../../hooks/useAPI";
 
 const { Content } = Layout;
 const { Option } = Select;
 
 function MainPage({ BE_API_DEFAULT_ROUTE }) {
+  const instance = useAPI();
   // const dispatch = useDispatch()
 
   // useEffect(() => {
@@ -69,8 +69,6 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
     // setCurWard(null);
     // setCurStreet(null);
   };
-
-  console.log("locationList", locationList);
 
   //   const { isLoading, data } = useFetch(`${BE_API_DEFAULT_ROUTE}/tintuc/top`);
   const { isLoading, data } = { isLoading: true, data: undefined };
