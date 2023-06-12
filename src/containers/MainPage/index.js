@@ -17,7 +17,10 @@ import { memo, useEffect, useState } from "react";
 //   getWardsmainPage,
 // } from "redux/selectors";
 
+import locationList from "../../locationList.json";
+
 import "./styles.scss";
+import HotNews from "./HotNews";
 
 const { Content } = Layout;
 const { Option } = Select;
@@ -44,6 +47,13 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
   const [curWard, setCurWard] = useState(null);
   const [curStreet, setCurStreet] = useState(null);
 
+  const [searchValue, setSearchValue] = useState({
+    province: null,
+    district: null,
+    ward: null,
+    street: null,
+  });
+
   const handleSetProvince = (provice) => {
     // setCurProvice(provice);
     // dispatch(callDistricts(provice));
@@ -60,33 +70,26 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
     // setCurStreet(null);
   };
 
+  console.log("locationList", locationList);
+
   //   const { isLoading, data } = useFetch(`${BE_API_DEFAULT_ROUTE}/tintuc/top`);
   const { isLoading, data } = { isLoading: true, data: undefined };
   return (
     <Content>
-      <div className="home-banner" style={{ position: "relative" }}>
-        <img
+      <div className="home-banner">
+        {/* <img
           alt="home-banner"
           src="https://storage.googleapis.com/vinhomes-data-01/3.jpg"
           style={{ width: "100%" }}
-        />
-        <Row
-          gutter={16}
-          style={{
-            position: "absolute",
-            left: "25%",
-            bottom: "10%",
-            width: "80vh",
-            backgroundColor: "white",
-            padding: "20px 0px",
-            borderRadius: "20px",
-          }}
-          className="search-banner"
-        >
-          <Col span={4}>
+        /> */}
+        <Row gutter={24} className="search-banner">
+          <Col>
             <div className="container">
-              <div className="title">Tỉnh</div>
-              <Select placeholder="Chọn Tỉnh" onChange={handleSetProvince}>
+              <div className="title">Tỉnh / Thành Phố</div>
+              <Select
+                placeholder="Chọn Tỉnh / Thành Phố"
+                onChange={handleSetProvince}
+              >
                 {provinces.map((province) => (
                   <Option key={province.code} value={province.code}>
                     {province.name}
@@ -95,11 +98,11 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
               </Select>
             </div>
           </Col>
-          <Col span={4}>
+          <Col>
             <div className="container">
-              <div className="title">Quận</div>
+              <div className="title">Quận Huyện</div>
               <Select
-                placeholder="Chọn Quận"
+                placeholder="Chọn Quận Huyện"
                 value={curDistrict}
                 onChange={handleSetDistrict}
                 disabled={curPorvince === null}
@@ -112,7 +115,7 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
               </Select>
             </div>
           </Col>
-          <Col span={6}>
+          <Col>
             <div className="container">
               <div className="title">Phường - Xã</div>
               <Select
@@ -129,24 +132,7 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
               </Select>
             </div>
           </Col>
-          <Col span={6}>
-            <div className="container">
-              <div className="title">Đường - Phố</div>
-              <Select
-                placeholder="Chọn Đường - Phố"
-                value={curStreet}
-                onChange={setCurStreet}
-                disabled={curDistrict === null}
-              >
-                {streets.map((streets) => (
-                  <Option key={streets.id} value={streets.id}>
-                    {streets.name}
-                  </Option>
-                ))}
-              </Select>
-            </div>
-          </Col>
-          <Col span={4}>
+          <Col>
             <div
               style={{ height: "100%", display: "flex", alignItems: "center" }}
             >
@@ -161,71 +147,7 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
         </Row>
       </div>
 
-      <div className="hot-news">
-        <div className="hot-news__title">DỰ ÁN MỚI NHẤT</div>
-        <div className="hot-news__content">
-          Tiên phong mang đến trải nghiệm sống lý tưởng giữa lòng đô thị với
-          những khu dân cư được quy hoạch chuyên nghiệp, tiện ích dịch vụ đồng
-          bộ, môi trường xanh sạch, giúp định hình phong cách sống mới cho người
-          dân Việt Nam.
-        </div>
-        <Carousel autoplay>
-          <div className="hot-news__content__carousel">
-            <Row>
-              <Col span={12}>
-                <div className="slogan">Bất động sản quốc lộ 50</div>
-                <h1 className="pj-title">
-                  CÁC DỰ ÁN BẬC NHẤT <br /> Ở QUỐC LỘ 50
-                </h1>
-                <div className="desc">
-                  Kiến tạo nên một Thành phố mới với Thiên nhiên – Cuộc sống và
-                  Con người với một diện mạo mới mẻ và tinh thần hứng khởi, sẵn
-                  sàng cho những trải nghiệm tưởng không thể mà lại là có thể.
-                </div>
-                <a href="/view-all" className="link">
-                  KHÁM PHÁ DỰ ÁN
-                </a>
-              </Col>
-              <Col span={12}>
-                <a href="/view-all">
-                  <img
-                    style={{ width: "100%", height: "100%" }}
-                    src="https://storage.googleapis.com/vinhomes-data-01/styles/images_870_x_530/public/2021_02/Secton 1 (Headbanner)_2.jpg?itok=XlBvEIRS"
-                    alt="VINHOMES <br> OCEAN PARK"
-                  />
-                </a>
-              </Col>
-            </Row>
-          </div>
-          <div className="hot-news__content__carousel">
-            <Row>
-              <Col span={12}>
-                <div className="slogan">Bất động sản quốc lộ 50</div>
-                <h1 className="pj-title">
-                  CÁC DỰ ÁN BẬC NHẤT <br /> Ở QUỐC LỘ 50
-                </h1>
-                <div className="desc">
-                  Kiến tạo nên một Thành phố mới với Thiên nhiên – Cuộc sống và
-                  Con người với một diện mạo mới mẻ và tinh thần hứng khởi, sẵn
-                  sàng cho những trải nghiệm tưởng không thể mà lại là có thể.
-                </div>
-                <a href="/view-all" className="link">
-                  KHÁM PHÁ DỰ ÁN
-                </a>
-              </Col>
-              <Col span={12}>
-                <a href="/view-all">
-                  <img
-                    style={{ width: "100%", height: "100%" }}
-                    src="https://storage.googleapis.com/vinhomes-data-01/styles/images_870_x_530/public/2021_02/Secton 1 (Headbanner)_2.jpg?itok=XlBvEIRS"
-                    alt="VINHOMES <br> OCEAN PARK"
-                  />
-                </a>
-              </Col>
-            </Row>
-          </div>
-        </Carousel>
-      </div>
+      <HotNews autoplay />
 
       <div className="dailynews-banner">
         <div className="dailynews-banner__top">

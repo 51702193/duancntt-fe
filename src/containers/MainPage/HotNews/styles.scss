@@ -1,0 +1,68 @@
+.hot-news {
+  background-color: rgb(208 147 47 / 20%);
+  padding: 20px 10vh;
+  margin: 50px 20px;
+
+  &__title {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: 47px;
+    letter-spacing: 0.03em;
+    color: #162b75;
+    font-family: "GaramondPremrPro";
+    margin: 0;
+    margin-bottom: 20px;
+  }
+
+  &__content {
+    max-width: 506px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+    color: #222222;
+    margin-bottom: 30px;
+
+    &__carousel {
+      position: relative;
+
+      .slogan {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 150%;
+        color: #222222;
+        margin-bottom: 10px;
+      }
+      .pj-title {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 30px;
+        line-height: 120%;
+        color: #dca447;
+        margin: 0;
+        margin-bottom: 20px;
+      }
+      .desc {
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 20px;
+        color: #707070;
+      }
+      .link {
+        position: absolute;
+        bottom: 40px;
+        left: 30px;
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 150%;
+        color: #162b75;
+      }
+    }
+  }
+
+  .hot-news__carousel {
+    padding: 30px;
+    background: #fff;
+  }
+}
