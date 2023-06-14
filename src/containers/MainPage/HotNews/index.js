@@ -21,7 +21,7 @@ const HotNews = ({ autoplay }) => {
         >
           <div className="hot-news__content__carousel">
             <Row>
-              <Col span={12}>
+              <Col span={8}>
                 <div className="slogan">Bất động sản quốc lộ 50</div>
                 <h1 className="pj-title">
                   CÁC DỰ ÁN BẬC NHẤT <br /> Ở QUỐC LỘ 50
@@ -35,10 +35,10 @@ const HotNews = ({ autoplay }) => {
                   KHÁM PHÁ DỰ ÁN
                 </a>
               </Col>
-              <Col span={12}>
+              <Col offset={1} span={15}>
                 <a href="/view-all">
                   <img
-                    style={{ width: "100%", height: "100%" }}
+                    style={{ width: "100%", height: "520px" }}
                     src="https://storage.googleapis.com/vinhomes-data-01/styles/images_870_x_530/public/2021_02/Secton 1 (Headbanner)_2.jpg?itok=XlBvEIRS"
                     alt="VINHOMES <br> OCEAN PARK"
                   />
@@ -48,7 +48,7 @@ const HotNews = ({ autoplay }) => {
           </div>
           <div className="hot-news__content__carousel">
             <Row>
-              <Col span={12}>
+              <Col span={8}>
                 <div className="slogan">Bất động sản quốc lộ 50</div>
                 <h1 className="pj-title">
                   CÁC DỰ ÁN BẬC NHẤT <br /> Ở QUỐC LỘ 50
@@ -62,10 +62,10 @@ const HotNews = ({ autoplay }) => {
                   KHÁM PHÁ DỰ ÁN
                 </a>
               </Col>
-              <Col span={12}>
+              <Col offset={1} span={15}>
                 <a href="/view-all">
                   <img
-                    style={{ width: "100%", height: "100%" }}
+                    style={{ width: "100%", height: "520px" }}
                     src="https://storage.googleapis.com/vinhomes-data-01/styles/images_870_x_530/public/2021_02/Secton 1 (Headbanner)_2.jpg?itok=XlBvEIRS"
                     alt="VINHOMES <br> OCEAN PARK"
                   />
