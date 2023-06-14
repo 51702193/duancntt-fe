@@ -14,7 +14,11 @@ const HotNews = ({ autoplay }) => {
         Nam.
       </div>
       <div className="hot-news__carousel">
-        <Carousel autoplay={autoplay} dots={false}>
+        <Carousel
+          style={{ marginLeft: "1px", padding: "30px", background: "white" }}
+          autoplay={autoplay}
+          dots={false}
+        >
           <div className="hot-news__content__carousel">
             <Row>
               <Col span={12}>

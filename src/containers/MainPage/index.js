@@ -1,6 +1,6 @@
 import { Layout, Row, Col, Carousel, Select, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 // import useFetch from "react-fetch-hook";
 
 // import { useDispatch, useSelector } from 'react-redux';
@@ -25,55 +25,60 @@ const { Content } = Layout;
 const { Option } = Select;
 
 function MainPage({ BE_API_DEFAULT_ROUTE }) {
-  const [districts = [], onGetDistrictList] = useAPI({ url: "/districts" });
-  const [provinces = [], onGetProvinceList] = useAPI({ url: "/provinces" });
-  console.log("provinces", provinces);
-  useEffect(() => {
-    onGetDistrictList();
-    onGetProvinceList();
-  }, []);
-
-  const streets = [];
-  const wards = [];
-
   const [curPorvince, setCurProvice] = useState(null);
   const [curDistrict, setCurDistrict] = useState(null);
   const [curWard, setCurWard] = useState(null);
-  const [curStreet, setCurStreet] = useState(null);
+
+  const [
+    { isLoading: isLoadingProvincesData, data: provinces = [] },
+    onGetProvinceList,
+  ] = useAPI({
+    url: "/provinces",
+  });
+  const [
+    { isLoading: isLoadingDistrictsData, data: districts = [] },
+    onGetDistrictList,
+  ] = useAPI({
+    url: "/districts",
+  });
+
+  useEffect(() => {
+    onGetProvinceList();
+    onGetDistrictList();
+  }, []);
+
+  const wards = [];
 
   const [searchValue, setSearchValue] = useState({
     province: null,
     district: null,
     ward: null,
-    street: null,
   });
 
-  const handleSetProvince = (provice) => {
-    // setCurProvice(provice);
-    // dispatch(callDistricts(provice));
-    // setCurDistrict(null);
-    // setCurWard(null);
-    // setCurStreet(null);
-  };
+  const handleSetProvince = useCallback(
+    (province) => {
+      setCurProvice(provinces?.find((p) => p.provinceId === province));
+      setCurDistrict(null);
+      setCurWard(null);
+    },
+    [provinces]
+  );
 
-  const handleSetDistrict = (district) => {
-    // setCurDistrict(district);
-    // dispatch(callStreets(district));
-    // dispatch(callWards(district));
-    // setCurWard(null);
-    // setCurStreet(null);
-  };
+  const handleSetDistrict = useCallback(
+    (district) => {
+      setCurDistrict(districts?.find((p) => p.districtId === district));
+      setCurWard(null);
+    },
+    [districts]
+  );
+
+  console.log("districts", districts);
 
   //   const { isLoading, data } = useFetch(`${BE_API_DEFAULT_ROUTE}/tintuc/top`);
   const { isLoading, data } = { isLoading: true, data: undefined };
   return (
     <Content>
       <div className="home-banner">
-        {/* <img
-          alt="home-banner"
-          src="https://storage.googleapis.com/vinhomes-data-01/3.jpg"
-          style={{ width: "100%" }}
-        /> */}
         <Row gutter={24} className="search-banner">
           <Col>
             <div className="container">
@@ -81,6 +86,8 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
               <Select
                 placeholder="Chọn Tỉnh / Thành Phố"
                 onChange={handleSetProvince}
+                loading={isLoadingProvincesData}
+                disabled={isLoadingProvincesData}
               >
                 {provinces.map((province) => (
                   <Option key={province.provinceId} value={province.provinceId}>
@@ -95,9 +102,8 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
               <div className="title">Quận Huyện</div>
               <Select
                 placeholder="Chọn Quận Huyện"
-                value={curDistrict}
                 onChange={handleSetDistrict}
-                disabled={curPorvince === null}
+                disabled={curPorvince === null || isLoadingDistrictsData}
               >
                 {districts.map((district) => (
                   <Option key={district.districtId} value={district.districtId}>
@@ -129,7 +135,7 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
               style={{ height: "100%", display: "flex", alignItems: "center" }}
             >
               <Button
-                href={`search?province=${curPorvince}&district=${curDistrict}&ward=${curWard}&street=${curStreet}`}
+                href={`search?province=${curPorvince}&district=${curDistrict}&ward=${curWard}}`}
                 icon={<SearchOutlined />}
               >
                 Search
