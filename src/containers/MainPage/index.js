@@ -68,7 +68,20 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
         vitri: "vitri",
         created_date: "created_date",
       },
-      { id: "2", tenduan: "tenduan", dientich: "dientich" },
+      {
+        id: "2",
+        tenduan: "tenduan",
+        dientich: "dientich",
+        vitri: "vitri",
+        created_date: "created_date",
+      },
+      {
+        id: "3",
+        tenduan: "tenduan",
+        dientich: "dientich",
+        vitri: "vitri",
+        created_date: "created_date",
+      },
     ],
   };
   return (
@@ -146,42 +159,52 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
         <div className="dailynews-banner__top">
           <h2 className="title">Bất động sản dành cho bạn</h2>
         </div>
-        <Row gutter={[16, 24]} className="dailynews-banner__body">
+        <div className="dailynews-banner__body">
           {!data ? (
             <div style={{ fontSize: "25px", fontWeight: 600 }}>
               Hiện không có tin tức
             </div>
           ) : (
-            data?.map((tintuc) => {
+            data?.map((tintuc, idx) => {
               const ViewDetailsUrl = `/view-details/${tintuc.id}`;
               return (
-                <Col className="home-product" span={6} key={tintuc.id}>
-                  <div className="product-thumb ">
+                <div className="home-product" key={tintuc.id}>
+                  <div className="product-thumb">
                     <a href={ViewDetailsUrl}>
                       <img
-                        className=" ls-is-cached lazyloaded"
+                        className="ls-is-cached lazyloaded"
                         alt="first-img"
-                        src={`${BE_API_DEFAULT_ROUTE}/file/download/${
-                          tintuc?.images?.split(",")?.[0]
-                        }`}
+                        // src={`${BE_API_DEFAULT_ROUTE}/file/download/${
+                        //   tintuc?.images?.split(",")?.[0]
+                        // }`}
+                        src={"https://picsum.photos/1000"}
                       />
                     </a>
                   </div>
                   <div className="home-product-bound">
-                    <a href={ViewDetailsUrl} className="product-title">
-                      {tintuc.tenduan}
-                    </a>
-                    <div className="product-price">{tintuc.dientich}</div>
                     <a href="/" className="product-address">
                       {tintuc.vitri}
                     </a>
-                    <div className="product-date">{tintuc.created_date}</div>
+                    <a href={ViewDetailsUrl} className="product-title">
+                      {tintuc.tenduan}
+                    </a>
+
+                    <div class="product-desc">
+                      Tiên phong mang đến trải nghiệm số lý tưởng giữa lòng đô
+                      thị với những khu dân cư được quy hoạch chuyên nghiệp,
+                      tiện ích dịch vụ đồng bộ.
+                    </div>
                   </div>
-                </Col>
+                </div>
               );
             })
           )}
-        </Row>
+        </div>
+        <div className="dailynews-banner__footer">
+          <a href="/cong-dong-du-an">
+            <button class="btn btn-outline-primary">XEM TẤT CẢ</button>
+          </a>
+        </div>
       </div>
     </Content>
   );

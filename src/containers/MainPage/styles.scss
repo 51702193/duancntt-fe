@@ -49,28 +49,50 @@
 }
 
 .dailynews-banner {
-  background: #f0f2f5;
-  padding: 20px 10vh;
+  background: #f5f1e6;
+  padding: 30px 10vh 40px;
   margin: 50px 20px;
 
   &__top {
     .title {
-      font-size: 28px;
-      line-height: 38px;
-      text-transform: none;
-      color: #2d373f;
-      margin-bottom: 20px;
+      font-size: 40px;
+      font-weight: 700;
+      font-family: garamondpremrpro;
+      color: #162b75;
+      line-height: 48px;
+      text-align: center;
     }
   }
   &__body {
+    display: flex;
+    justify-content: center;
+    column-gap: 30px;
+
     .home-product {
+      height: 420px;
+      width: 360px;
+
+      .product-thumb {
+        height: 240px;
+        transition: height 0.3s;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
       .home-product-bound {
+        height: calc(100% - 240px);
+        background: #fff;
         display: flex;
         flex-direction: column;
-        padding: 8px 12px 10px 12px;
+        padding: 40px;
         border-top: none;
         box-sizing: border-box;
         border-radius: 0 0 4px 4px;
+        transition: background 1s;
+        transition: height 0.3s;
 
         .product-title {
           display: -webkit-box;
@@ -82,48 +104,94 @@
           white-space: normal;
           word-wrap: break-word;
           -webkit-box-orient: vertical;
-          color: #004e7f;
-          font-style: normal;
-          font-weight: 500;
-          font-size: 14px;
-          line-height: 20px;
-          margin-bottom: 4px;
-        }
 
-        .product-price {
-          font-style: normal;
-          font-weight: bold;
-          font-size: 14px;
-          line-height: 20px;
-          color: #2c2f36;
-          width: auto;
-          float: left;
-          margin-right: 8px;
+          font-family: GaramondPremrPro;
+          font-size: 25px;
+          line-height: 120%;
+          color: #222;
         }
 
         .product-address {
           display: inline-block;
           width: 100%;
-          font-family: Roboto;
-          font-style: normal;
-          font-weight: normal;
-          font-size: 14px;
-          line-height: 20px;
-          margin: 4px 0 6px 0;
-          color: #2c2f36;
+          font-family: montserrat, sans-serif;
+          font-weight: 600;
+          font-size: 13px;
+          line-height: 150%;
+          color: #979797;
         }
 
-        .product-date {
+        .product-desc {
           font-style: normal;
-          font-weight: normal;
-          font-size: 14px;
+          font-weight: 400;
+          font-size: 13px;
           line-height: 20px;
-          color: #747c87;
-          cursor: default;
-          position: relative;
-          display: inline-block;
+          text-align: justify;
+          color: #222;
+          margin-top: 10px;
+          visibility: hidden;
+          opacity: 0;
+          height: 0;
+          transition: 0.3s;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
         }
       }
+
+      &:hover {
+        .product-thumb {
+          height: 160px;
+        }
+
+        .home-product-bound {
+          background: #f4e7c8;
+          height: calc(100% - 160px);
+
+          .product-title {
+            color: #dca447;
+          }
+
+          .product-address {
+            color: #222;
+          }
+
+          .product-desc {
+            height: 80px;
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+      }
+    }
+  }
+  &__footer {
+    margin: auto;
+    margin-top: 40px;
+    text-align: center;
+
+    button {
+      background: #dca447;
+      border-radius: 3px;
+      width: 200px;
+      height: 45px;
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 150%;
+      text-align: center;
+      color: #fff;
+      border: 1px solid transparent;
+      user-select: none;
+      white-space: nowrap;
+      vertical-align: middle;
+      -ms-touch-action: manipulation;
+      touch-action: manipulation;
+      cursor: pointer;
+      display: inline-block;
+      padding: 6px 12px;
+      margin-bottom: 0;
     }
   }
 }
