@@ -25,20 +25,14 @@ const { Content } = Layout;
 const { Option } = Select;
 
 function MainPage({ BE_API_DEFAULT_ROUTE }) {
-  const instance = useAPI();
-  // const dispatch = useDispatch()
+  const [districts = [], onGetDistrictList] = useAPI({ url: "/districts" });
+  const [provinces = [], onGetProvinceList] = useAPI({ url: "/provinces" });
+  console.log("provinces", provinces);
+  useEffect(() => {
+    onGetDistrictList();
+    onGetProvinceList();
+  }, []);
 
-  // useEffect(() => {
-  //     dispatch(callProvinces())
-  // }, [])
-
-  // const districts = useSelector(getDistrictsmainPage);
-  // const provinces = useSelector(getProvincesmainPage);
-  // const streets = useSelector(getStreetsmainPage);
-  // const wards = useSelector(getWardsmainPage);
-
-  const districts = [];
-  const provinces = [];
   const streets = [];
   const wards = [];
 
@@ -89,8 +83,8 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
                 onChange={handleSetProvince}
               >
                 {provinces.map((province) => (
-                  <Option key={province.code} value={province.code}>
-                    {province.name}
+                  <Option key={province.provinceId} value={province.provinceId}>
+                    {province.province}
                   </Option>
                 ))}
               </Select>
@@ -106,8 +100,8 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
                 disabled={curPorvince === null}
               >
                 {districts.map((district) => (
-                  <Option key={district.id} value={district.id}>
-                    {district.name}
+                  <Option key={district.districtId} value={district.districtId}>
+                    {district.district}
                   </Option>
                 ))}
               </Select>
