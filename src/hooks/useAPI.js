@@ -18,7 +18,7 @@ const useAPI = ({ url }) => {
     function (error) {
       // Do something with request error
       setData({ isLoading: false });
-      return Promise.reject(error);
+      // return Promise.reject(error);
     }
   );
 

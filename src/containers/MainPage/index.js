@@ -1,21 +1,6 @@
-import { Layout, Row, Col, Carousel, Select, Button } from "antd";
+import { Layout, Row, Col, Select, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { memo, useCallback, useEffect, useState } from "react";
-// import useFetch from "react-fetch-hook";
-
-// import { useDispatch, useSelector } from 'react-redux';
-// import {
-//   callProvinces,
-//   callDistricts,
-//   callStreets,
-//   callWards,
-// } from "redux/actions/mainPage";
-// import {
-//   getDistrictsmainPage,
-//   getProvincesmainPage,
-//   getStreetsmainPage,
-//   getWardsmainPage,
-// } from "redux/selectors";
 
 import "./styles.scss";
 import HotNews from "./HotNews";
@@ -72,10 +57,20 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
     [districts]
   );
 
-  console.log("districts", districts);
-
   //   const { isLoading, data } = useFetch(`${BE_API_DEFAULT_ROUTE}/tintuc/top`);
-  const { isLoading, data } = { isLoading: true, data: undefined };
+  const { isLoading, data } = {
+    isLoading: true,
+    data: [
+      {
+        id: "1",
+        tenduan: "tenduan",
+        dientich: "dientich",
+        vitri: "vitri",
+        created_date: "created_date",
+      },
+      { id: "2", tenduan: "tenduan", dientich: "dientich" },
+    ],
+  };
   return (
     <Content>
       <div className="home-banner">
@@ -167,7 +162,7 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
                         className=" ls-is-cached lazyloaded"
                         alt="first-img"
                         src={`${BE_API_DEFAULT_ROUTE}/file/download/${
-                          tintuc.images.split(",")[0]
+                          tintuc?.images?.split(",")?.[0]
                         }`}
                       />
                     </a>
