@@ -10,7 +10,7 @@ const { Content } = Layout;
 const { Option } = Select;
 
 function MainPage({ BE_API_DEFAULT_ROUTE }) {
-  const [curPorvince, setCurProvice] = useState(null);
+  const [curProvince, setCurProvince] = useState(null);
   const [curDistrict, setCurDistrict] = useState(null);
   const [curWard, setCurWard] = useState(null);
 
@@ -26,13 +26,16 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
   ] = useAPI({
     url: "/districts",
   });
+  const [{ isLoading: isLoadingWardsData, data: wards = [] }, onGetWardList] =
+    useAPI({
+      url: "/wards",
+    });
 
   useEffect(() => {
     onGetProvinceList();
     onGetDistrictList();
+    onGetWardList();
   }, []);
-
-  const wards = [];
 
   const [searchValue, setSearchValue] = useState({
     province: null,
@@ -42,7 +45,7 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
 
   const handleSetProvince = useCallback(
     (province) => {
-      setCurProvice(provinces?.find((p) => p.provinceId === province));
+      setCurProvince(provinces?.find((p) => p.provinceId === province));
       setCurDistrict(null);
       setCurWard(null);
     },
@@ -55,6 +58,13 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
       setCurWard(null);
     },
     [districts]
+  );
+
+  const handleSetWard = useCallback(
+    (ward) => {
+      setCurWard(wards?.find((p) => p.wardId === ward));
+    },
+    [wards]
   );
 
   //   const { isLoading, data } = useFetch(`${BE_API_DEFAULT_ROUTE}/tintuc/top`);
@@ -111,7 +121,7 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
               <Select
                 placeholder="Chọn Quận Huyện"
                 onChange={handleSetDistrict}
-                disabled={curPorvince === null || isLoadingDistrictsData}
+                disabled={curProvince === null || isLoadingDistrictsData}
               >
                 {districts.map((district) => (
                   <Option key={district.districtId} value={district.districtId}>
@@ -126,13 +136,12 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
               <div className="title">Phường - Xã</div>
               <Select
                 placeholder="Chọn Phường - Xã"
-                value={curWard}
-                onChange={setCurWard}
-                disabled={curDistrict === null}
+                onChange={handleSetWard}
+                disabled={curDistrict === null || isLoadingWardsData}
               >
                 {wards.map((ward) => (
-                  <Option key={ward.id} value={ward.id}>
-                    {ward.name}
+                  <Option key={ward.wardId} value={ward.wardId}>
+                    {ward.ward}
                   </Option>
                 ))}
               </Select>
@@ -143,7 +152,7 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
               style={{ height: "100%", display: "flex", alignItems: "center" }}
             >
               <Button
-                href={`search?province=${curPorvince}&district=${curDistrict}&ward=${curWard}}`}
+                href={`search?province=${curProvince}&district=${curDistrict}&ward=${curWard}}`}
                 icon={<SearchOutlined />}
               >
                 Search
