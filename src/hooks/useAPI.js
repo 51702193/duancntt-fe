@@ -22,10 +22,10 @@ const useAPI = ({ url }) => {
     }
   );
 
-  const onRequest = () => {
+  const onGetRequest = () => {
     instance
       .get(url, {
-        timeout: 5000,
+        // timeout: 5000,
       })
       .then(function (response) {
         // console.log(response);
@@ -40,7 +40,7 @@ const useAPI = ({ url }) => {
     // });
   };
 
-  return [data, onRequest];
+  return [data, onGetRequest];
 };
 
 export default useAPI;

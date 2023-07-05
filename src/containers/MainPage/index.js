@@ -1,6 +1,7 @@
 import { Layout, Row, Col, Select, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { memo, useCallback, useEffect, useState } from "react";
+import { GoogleLogin } from "@react-oauth/google";
 
 import "./styles.scss";
 import HotNews from "./HotNews";
@@ -9,7 +10,7 @@ import useAPI from "../../hooks/useAPI";
 const { Content } = Layout;
 const { Option } = Select;
 
-function MainPage({ BE_API_DEFAULT_ROUTE }) {
+function MainPage() {
   const [curProvince, setCurProvince] = useState(null);
   const [curDistrict, setCurDistrict] = useState(null);
   const [curWard, setCurWard] = useState(null);
@@ -67,7 +68,6 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
     [wards]
   );
 
-  //   const { isLoading, data } = useFetch(`${BE_API_DEFAULT_ROUTE}/tintuc/top`);
   const { isLoading, data } = {
     isLoading: true,
     data: [
@@ -96,6 +96,26 @@ function MainPage({ BE_API_DEFAULT_ROUTE }) {
   };
   return (
     <Content>
+      <div
+        style={{
+          position: "absolute",
+          top: "1rem",
+          zIndex: 9999,
+          left: "99%",
+          transform: "translateX(-100%)",
+        }}
+      >
+        <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            localStorage.setItem("auth", credentialResponse.credential);
+          }}
+          useOneTap
+          onError={() => {
+            console.log("Login Failed");
+          }}
+        />
+      </div>
+
       <div className="home-banner">
         <Row gutter={24} className="search-banner">
           <Col>

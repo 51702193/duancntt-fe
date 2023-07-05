@@ -24,17 +24,17 @@ const validateMessages = {
 
 const PostNews = ({ BE_API_DEFAULT_ROUTE }) => {
   const user = null;
-  const districts = null;
-  const provinces = null;
-  const streets = null;
-  const wards = null;
+  const districts = [];
+  const provinces = [];
+  const streets = [];
+  const wards = [];
 
   const [curPorvince, setCurProvice] = useState(null);
   const [curDistrict, setCurDistrict] = useState(null);
 
-  if (!user) {
-    return <>Please Login First</>;
-  }
+  // if (!user) {
+  //   return <>Please Login First</>;
+  // }
 
   const handleSetProvince = (provice) => {
     setCurProvice(provice);

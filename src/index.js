@@ -1,7 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 import {
@@ -10,10 +8,17 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+
+import { ErrorBoundary } from "react-error-boundary";
+
 import MainPage from "./containers/MainPage";
 import ViewAll from "./containers/ViewAll";
 import AdminPage from "./containers/AdminPage";
 import PostNews from "./containers/PostNews";
+
+import "./index.scss";
+
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,7 +36,11 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ErrorBoundary fallback={<div>Something went wrong</div>}>
+      <GoogleOAuthProvider clientId="188789041069-5p15dp7j6akls94ma73mb3v0gleptbpi.apps.googleusercontent.com">
+        <RouterProvider router={router} />
+      </GoogleOAuthProvider>
+    </ErrorBoundary>
   </React.StrictMode>
 );
 
