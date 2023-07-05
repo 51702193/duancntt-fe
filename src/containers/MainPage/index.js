@@ -1,8 +1,9 @@
 import { Layout, Row, Col, Select, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { memo, useCallback, useEffect, useState } from "react";
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import { toast } from "react-toastify";
+import useFetch from "react-fetch-hook";
 
 import "./styles.scss";
 import HotNews from "./HotNews";
@@ -14,7 +15,22 @@ const { Option } = Select;
 function MainPage() {
   const [curProvince, setCurProvince] = useState(null);
   const [curDistrict, setCurDistrict] = useState(null);
+  const [access_token, setaccess_token] = useState(null);
   const [curWard, setCurWard] = useState(null);
+
+  ///
+  var url = `https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${access_token}`;
+  const { isLoading: a, data: b } = useFetch(url);
+
+  const login = useGoogleLogin({
+    onSuccess: (codeResponse) => {
+      setaccess_token(codeResponse.access_token);
+      console.log(codeResponse);
+    },
+    // flow: "auth-code",
+  });
+
+  ///
 
   const [
     { isLoading: isLoadingProvincesData, data: provinces = [] },
@@ -108,7 +124,12 @@ function MainPage() {
       >
         <GoogleLogin
           onSuccess={(credentialResponse) => {
+            console.log(
+              "🚀 ~ file: index.js:111 ~ MainPage ~ credentialResponse:",
+              credentialResponse
+            );
             localStorage.setItem("auth", credentialResponse.credential);
+            setaccess_token(credentialResponse.credential);
             toast.success("Login Successfully", {
               position: "top-right",
               autoClose: 3000,
@@ -120,7 +141,6 @@ function MainPage() {
               theme: "light",
             });
           }}
-          useOneTap
           onError={() => {
             toast.error("Login Failed", {
               position: "top-right",
@@ -195,8 +215,9 @@ function MainPage() {
               style={{ height: "100%", display: "flex", alignItems: "center" }}
             >
               <Button
-                href={`search?province=${curProvince}&district=${curDistrict}&ward=${curWard}}`}
+                // href={`search?province=${curProvince}&district=${curDistrict}&ward=${curWard}}`}
                 icon={<SearchOutlined />}
+                onClick={() => login()}
               >
                 Search
               </Button>
