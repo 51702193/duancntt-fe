@@ -16,6 +16,9 @@ import ViewAll from "./containers/ViewAll";
 import AdminPage from "./containers/AdminPage";
 import PostNews from "./containers/PostNews";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import "./index.scss";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -40,6 +43,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <GoogleOAuthProvider clientId="188789041069-5p15dp7j6akls94ma73mb3v0gleptbpi.apps.googleusercontent.com">
         <RouterProvider router={router} />
       </GoogleOAuthProvider>
+      <ToastContainer />
     </ErrorBoundary>
   </React.StrictMode>
 );

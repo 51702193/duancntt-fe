@@ -2,6 +2,7 @@ import { Layout, Row, Col, Select, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { memo, useCallback, useEffect, useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
+import { toast } from "react-toastify";
 
 import "./styles.scss";
 import HotNews from "./HotNews";
@@ -108,10 +109,29 @@ function MainPage() {
         <GoogleLogin
           onSuccess={(credentialResponse) => {
             localStorage.setItem("auth", credentialResponse.credential);
+            toast.success("Login Successfully", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
           }}
           useOneTap
           onError={() => {
-            console.log("Login Failed");
+            toast.error("Login Failed", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
           }}
         />
       </div>
@@ -144,7 +164,10 @@ function MainPage() {
                 disabled={curProvince === null || isLoadingDistrictsData}
               >
                 {districts.map((district) => (
-                  <Option key={district.districtId} value={district.districtId}>
+                  <Option
+                    key={`district${district.districtId}`}
+                    value={district.districtId}
+                  >
                     {district.district}
                   </Option>
                 ))}
@@ -160,7 +183,7 @@ function MainPage() {
                 disabled={curDistrict === null || isLoadingWardsData}
               >
                 {wards.map((ward) => (
-                  <Option key={ward.wardId} value={ward.wardId}>
+                  <Option key={`ward${ward.wardId}`} value={ward.wardId}>
                     {ward.ward}
                   </Option>
                 ))}
@@ -218,7 +241,7 @@ function MainPage() {
                       {tintuc.tenduan}
                     </a>
 
-                    <div class="product-desc">
+                    <div className="product-desc">
                       Tiên phong mang đến trải nghiệm số lý tưởng giữa lòng đô
                       thị với những khu dân cư được quy hoạch chuyên nghiệp,
                       tiện ích dịch vụ đồng bộ.
@@ -231,7 +254,7 @@ function MainPage() {
         </div>
         <div className="dailynews-banner__footer">
           <a href="/cong-dong-du-an">
-            <button class="btn btn-outline-primary">XEM TẤT CẢ</button>
+            <button className="btn btn-outline-primary">XEM TẤT CẢ</button>
           </a>
         </div>
       </div>
