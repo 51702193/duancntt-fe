@@ -22,6 +22,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./index.scss";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import TopNav from "./components/TopNav";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -41,7 +42,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ErrorBoundary fallback={<div>Something went wrong</div>}>
       <GoogleOAuthProvider clientId="188789041069-5p15dp7j6akls94ma73mb3v0gleptbpi.apps.googleusercontent.com">
-        <RouterProvider router={router} />
+        <TopNav />
+        <main className="main">
+          <RouterProvider router={router} />
+        </main>
       </GoogleOAuthProvider>
       <ToastContainer />
     </ErrorBoundary>
