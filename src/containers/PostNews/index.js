@@ -3,6 +3,7 @@ import { memo, useEffect, useState } from "react";
 import { UploadOutlined, InboxOutlined } from "@ant-design/icons";
 
 import "./styles.scss";
+import LexicalEditor from "../../components/LexicalEditor";
 const { Option } = Select;
 
 const layout = {
@@ -90,6 +91,8 @@ const PostNews = ({ BE_API_DEFAULT_ROUTE }) => {
       }
     },
   };
+
+  return <LexicalEditor />;
 
   return (
     <Form

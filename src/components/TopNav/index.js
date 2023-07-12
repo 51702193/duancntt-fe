@@ -75,7 +75,6 @@ const TopNav = () => {
   const authUserLocalStorage = JSON.parse(localStorage.getItem("auth"));
   var url = `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${authUserLocalStorage?.access_token}`;
   const { isLoading: isLoadingFetchAuthUser, data: authUser } = useFetch(url);
-  console.log("🚀 ~ file: index.js:17 ~ TopNav ~ authUser:", authUser);
 
   return (
     <div className="top-nav-container">

@@ -34,6 +34,7 @@ const router = createBrowserRouter(
       <Route path="/cong-dong-du-an" element={<ViewAll />} />
       <Route path="/admin" element={<AdminPage />} />
       <Route path="/dang-tin-tuc" element={<PostNews />} />
+      <Route path="*" element={<div>404 not found</div>} />
     </>
   )
 );
