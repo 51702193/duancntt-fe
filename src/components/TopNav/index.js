@@ -1,42 +1,11 @@
 import React from "react";
-
-import { ReactComponent as Logo } from "./logo.svg";
-
-import "./styles.scss";
 import { useGoogleLogin } from "@react-oauth/google";
 import useFetch from "react-fetch-hook";
 import { toast } from "react-toastify";
 
-// onSuccess={(credentialResponse) => {
-//   console.log(
-//     "🚀 ~ file: index.js:111 ~ MainPage ~ credentialResponse:",
-//     credentialResponse
-//   );
-//   localStorage.setItem("auth", credentialResponse.credential);
-//   setaccess_token(credentialResponse.credential);
-//   toast.success("Login Successfully", {
-//     position: "top-right",
-//     autoClose: 3000,
-//     hideProgressBar: false,
-//     closeOnClick: true,
-//     pauseOnHover: true,
-//     draggable: true,
-//     progress: undefined,
-//     theme: "light",
-//   });
-// }}
-// onError={() => {
-//   toast.error("Login Failed", {
-//     position: "top-right",
-//     autoClose: 3000,
-//     hideProgressBar: false,
-//     closeOnClick: true,
-//     pauseOnHover: true,
-//     draggable: true,
-//     progress: undefined,
-//     theme: "light",
-//   });
-// }}
+import { ReactComponent as Logo } from "./logo.svg";
+
+import "./styles.scss";
 
 const TopNav = () => {
   const googleLogin = useGoogleLogin({
@@ -78,7 +47,10 @@ const TopNav = () => {
 
   return (
     <div className="top-nav-container">
-      <Logo className="top-nav-logo" />
+      <Logo
+        onClick={() => window.location.replace("/")}
+        className="top-nav-logo"
+      />
       <div className="top-nav-chart">
         <div className="chart_img ht_flex">
           <img
@@ -107,7 +79,8 @@ const TopNav = () => {
           className="top-nav-user"
           src="https://vinhomes.vn/themes/porto/img/vinhomes/ht/user.svg"
           alt="vinhomes"
-          onClick={googleLogin}
+          style={isLoadingFetchAuthUser ? { cursor: "not-allowed" } : {}}
+          onClick={isLoadingFetchAuthUser ? () => {} : googleLogin}
         />
       )}
     </div>

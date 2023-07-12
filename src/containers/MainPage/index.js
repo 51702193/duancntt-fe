@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Layout, Row, Col, Select, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { memo, useCallback, useEffect, useState } from "react";
@@ -5,6 +6,7 @@ import { memo, useCallback, useEffect, useState } from "react";
 import "./styles.scss";
 import HotNews from "./HotNews";
 import useAPI from "../../hooks/useAPI";
+import useFetch from "react-fetch-hook";
 
 const { Content } = Layout;
 const { Option } = Select;
@@ -30,18 +32,16 @@ function MainPage() {
     useAPI({
       url: "/wards",
     });
+  const { isLoadingTopDuAn, data: topDuAn } = useFetch(
+    "https://dacntt2-n092-be.netlify.app/.netlify/functions/api/top-du-an"
+  );
+  console.log("🚀 ~ file: index.js:36 ~ MainPage ~ topDuAn:", topDuAn);
 
   useEffect(() => {
     onGetProvinceList();
     onGetDistrictList();
     onGetWardList();
   }, []);
-
-  const [searchValue, setSearchValue] = useState({
-    province: null,
-    district: null,
-    ward: null,
-  });
 
   const handleSetProvince = useCallback(
     (province) => {
@@ -67,32 +67,6 @@ function MainPage() {
     [wards]
   );
 
-  const { isLoading, data } = {
-    isLoading: true,
-    data: [
-      {
-        id: "1",
-        tenduan: "tenduan",
-        dientich: "dientich",
-        vitri: "vitri",
-        created_date: "created_date",
-      },
-      {
-        id: "2",
-        tenduan: "tenduan",
-        dientich: "dientich",
-        vitri: "vitri",
-        created_date: "created_date",
-      },
-      {
-        id: "3",
-        tenduan: "tenduan",
-        dientich: "dientich",
-        vitri: "vitri",
-        created_date: "created_date",
-      },
-    ],
-  };
   return (
     <Content>
       <div
@@ -181,12 +155,12 @@ function MainPage() {
           <h2 className="title">Bất động sản dành cho bạn</h2>
         </div>
         <div className="dailynews-banner__body">
-          {!data ? (
+          {!topDuAn ? (
             <div style={{ fontSize: "25px", fontWeight: 600 }}>
               Hiện không có tin tức
             </div>
           ) : (
-            data?.map((tintuc, idx) => {
+            topDuAn?.map((tintuc, idx) => {
               const ViewDetailsUrl = `/view-details/${tintuc.id}`;
               return (
                 <div className="home-product" key={tintuc.id}>
@@ -195,10 +169,7 @@ function MainPage() {
                       <img
                         className="ls-is-cached lazyloaded"
                         alt="first-img"
-                        // src={`${BE_API_DEFAULT_ROUTE}/file/download/${
-                        //   tintuc?.images?.split(",")?.[0]
-                        // }`}
-                        src={"https://picsum.photos/1000"}
+                        src={tintuc.image}
                       />
                     </a>
                   </div>
@@ -210,11 +181,7 @@ function MainPage() {
                       {tintuc.tenduan}
                     </a>
 
-                    <div className="product-desc">
-                      Tiên phong mang đến trải nghiệm số lý tưởng giữa lòng đô
-                      thị với những khu dân cư được quy hoạch chuyên nghiệp,
-                      tiện ích dịch vụ đồng bộ.
-                    </div>
+                    <div className="product-desc">{tintuc.mota}</div>
                   </div>
                 </div>
               );

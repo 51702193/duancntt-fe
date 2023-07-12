@@ -102,13 +102,13 @@
         transition: height 0.3s;
 
         .product-title {
-          display: -webkit-box;
+          display: block;
           height: 40px;
           overflow: hidden;
           -webkit-line-clamp: 2;
           position: relative;
           text-overflow: ellipsis;
-          white-space: normal;
+          white-space: nowrap;
           word-wrap: break-word;
           -webkit-box-orient: vertical;
 
