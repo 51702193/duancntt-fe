@@ -1,9 +1,12 @@
 import { Form, Input, Button, Select, Upload, message } from "antd";
-import { memo, useEffect, useState } from "react";
-import { UploadOutlined, InboxOutlined } from "@ant-design/icons";
+import { memo, useState } from "react";
+import { InboxOutlined } from "@ant-design/icons";
 
 import "./styles.scss";
 import LexicalEditor from "../../components/LexicalEditor";
+import { Navigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 const { Option } = Select;
 
 const layout = {
@@ -23,7 +26,7 @@ const validateMessages = {
   },
 };
 
-const PostNews = ({ BE_API_DEFAULT_ROUTE }) => {
+const PostNews = ({ BE_API_DEFAULT_ROUTE, authUser }) => {
   const user = null;
   const districts = [];
   const provinces = [];
@@ -33,9 +36,20 @@ const PostNews = ({ BE_API_DEFAULT_ROUTE }) => {
   const [curPorvince, setCurProvice] = useState(null);
   const [curDistrict, setCurDistrict] = useState(null);
 
-  // if (!user) {
-  //   return <>Please Login First</>;
-  // }
+  if (!authUser) {
+    toast.error("Login Required", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+    return <Navigate to="/" replace />;
+  }
 
   const handleSetProvince = (provice) => {
     setCurProvice(provice);
@@ -272,4 +286,4 @@ const PostNews = ({ BE_API_DEFAULT_ROUTE }) => {
   );
 };
 
-export default PostNews;
+export default memo(PostNews);

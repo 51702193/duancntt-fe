@@ -1,13 +1,12 @@
 import React from "react";
 import { useGoogleLogin } from "@react-oauth/google";
-import useFetch from "react-fetch-hook";
 import { toast } from "react-toastify";
 
 import { ReactComponent as Logo } from "./logo.svg";
 
 import "./styles.scss";
 
-const TopNav = () => {
+const TopNav = ({ authUser, isLoadingFetchAuthUser }) => {
   const googleLogin = useGoogleLogin({
     scope:
       "openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
@@ -41,16 +40,21 @@ const TopNav = () => {
 
   // localStorage.removeItem("auth");
 
-  const authUserLocalStorage = JSON.parse(localStorage.getItem("auth"));
-  var url = `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${authUserLocalStorage?.access_token}`;
-  const { isLoading: isLoadingFetchAuthUser, data: authUser } = useFetch(url);
-
   return (
     <div className="top-nav-container">
       <Logo
         onClick={() => window.location.replace("/")}
         className="top-nav-logo"
       />
+      <div className="top-nav-navigator">
+        <a
+          rel="nofollow"
+          class="flex-vertical ht_relative ht_transition nav-link"
+          href="/dang-tin-tuc"
+        >
+          Đăng tin tức
+        </a>
+      </div>
       <div className="top-nav-chart">
         <div className="chart_img ht_flex">
           <img
