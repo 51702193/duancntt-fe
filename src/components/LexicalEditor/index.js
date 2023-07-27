@@ -116,14 +116,6 @@ function Editor({ onValuesChange }) {
 
   return (
     <LexicalComposer initialConfig={editorConfig}>
-      {/* <OnChangePlugin
-        onChange={(editorState) => {
-          editorState.read(() => {
-            console.log("aa");
-          });
-          // onValuesChange();
-        }}
-      /> */}
       <div className="editor-container">
         <ToolbarPlugin />
         <div className="editor-inner">

@@ -1,11 +1,12 @@
 import { Form, Input, Button, Select, Upload, message } from "antd";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { InboxOutlined } from "@ant-design/icons";
 
 import "./styles.scss";
 import LexicalEditor from "../../components/LexicalEditor";
 import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import useAPI from "../../hooks/useAPI";
 
 const { Option } = Select;
 
@@ -27,17 +28,37 @@ const validateMessages = {
 };
 
 const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
-  const user = null;
-  const districts = [];
-  const provinces = [];
-  const streets = [];
-  const wards = [];
+  const [
+    { isLoading: isLoadingProvincesData, data: provinces = [] },
+    onGetProvinceList,
+  ] = useAPI({
+    url: "/provinces",
+  });
+  console.log(
+    "🚀 ~ file: index.js:35 ~ PostNews ~ isLoadingProvincesData:",
+    isLoadingProvincesData
+  );
+  const [
+    { isLoading: isLoadingDistrictsData, data: districts = [] },
+    onGetDistrictList,
+  ] = useAPI({
+    url: "/districts",
+  });
+  const [{ isLoading: isLoadingWardsData, data: wards = [] }, onGetWardList] =
+    useAPI({
+      url: "/wards",
+    });
 
-  const [curPorvince, setCurProvice] = useState(null);
-  const [curDistrict, setCurDistrict] = useState(null);
+  const [imageList, setImageList] = useState([]);
 
   const [form] = Form.useForm();
   // form.setFieldValue("mota", "Mario");
+
+  useEffect(() => {
+    onGetProvinceList();
+    onGetDistrictList();
+    onGetWardList();
+  }, []);
 
   if (!authUser && !isLoadingFetchAuthUser) {
     toast.error("Login Required", {
@@ -54,45 +75,23 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
     return <Navigate to="/" replace />;
   }
 
-  const handleSetProvince = (provice) => {
-    setCurProvice(provice);
-    // dispatch(callDistricts(provice));
-  };
-
-  const handleSetDistrict = (district) => {
-    setCurDistrict(district);
-    // dispatch(callStreets(district));
-    // dispatch(callWards(district));
-  };
-
   const onFinish = (values) => {
     console.log("values finish", values);
     console.log("form 2", form.getFieldsValue());
+
+    // var reader = new FileReader();
+    // reader.onloadend = function () {
+    //   // console.log("RESULT", reader.result);
+    //   setImageList(reader.result);
+    // };
+    // reader.readAsDataURL(file);
   };
 
-  // const draggerProps = {
-  //   name: "file",
-  //   multiple: true,
-  //   action: `${BE_API_DEFAULT_ROUTE}/file/upload`,
-  //   beforeUpload: (file) => {
-  //     const fileType = ["image/png", "image/jpeg", "image/png"];
-  //     if (!["image/png", "image/jpeg", "image/png"].includes(file.type)) {
-  //       message.error(`please using PNG, jpg, jpeg file`);
-  //     }
-  //     return fileType.includes(file.type) ? true : Upload.LIST_IGNORE;
-  //   },
-  //   onChange(info) {
-  //     const { status } = info.file;
-  //     if (status === "done") {
-  //       info.file.fileName = info.file.xhr.response;
-  //       message.success(`${info.file.name} file uploaded successfully.`);
-  //     } else if (status === "error") {
-  //       message.error(`${info.file.name} file upload failed.`);
-  //     }
-  //   },
-  // };
-
-  // return <LexicalEditor />;
+  console.log(
+    'form.getFieldValue("province")',
+    form.getFieldValue("province"),
+    !!form.getFieldValue("province")
+  );
 
   return (
     <Form
@@ -105,7 +104,7 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
         <div className="title">Thông tin cơ bản</div>
         <div className="content">
           <Form.Item
-            name={["information1", "tenduan"]}
+            name="tenduan"
             label="Tên Dự Án"
             rules={[{ required: true }]}
           >
@@ -116,10 +115,13 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
             label="Tỉnh - Thành Phố"
             rules={[{ required: true }]}
           >
-            <Select placeholder="Chọn Tỉnh" onChange={handleSetProvince}>
+            <Select placeholder="Chọn Tỉnh" loading={isLoadingProvincesData}>
               {provinces.map((province) => (
-                <Option key={province.code} value={province.code}>
-                  {province.name}
+                <Option
+                  key={`province${province.provinceId}`}
+                  value={province.provinceId}
+                >
+                  {province.province}
                 </Option>
               ))}
             </Select>
@@ -131,12 +133,15 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
           >
             <Select
               placeholder="Chọn Quận"
-              onChange={handleSetDistrict}
-              disabled={curPorvince === null}
+              disabled={!form.getFieldValue("province")}
+              loading={isLoadingDistrictsData}
             >
               {districts.map((district) => (
-                <Option key={district.id} value={district.id}>
-                  {district.name}
+                <Option
+                  key={`district${district.districtId}`}
+                  value={district.districtId}
+                >
+                  {district.district}
                 </Option>
               ))}
             </Select>
@@ -148,11 +153,12 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
           >
             <Select
               placeholder="Chọn Phường - Xã"
-              disabled={curDistrict === null}
+              disabled={!form.getFieldValue("district")}
+              loading={isLoadingWardsData}
             >
               {wards.map((ward) => (
-                <Option key={ward.id} value={ward.id}>
-                  {ward.name}
+                <Option key={`ward${ward.wardId}`} value={ward.wardId}>
+                  {ward.ward}
                 </Option>
               ))}
             </Select>
@@ -182,7 +188,19 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
             label="Hình Ảnh"
             rules={[{ required: true }]}
           >
-            <Upload.Dragger //{...draggerProps}
+            <Upload.Dragger
+              beforeUpload={(file) => {
+                setImageList((prev) => [...prev, file]);
+                return false;
+              }}
+              onRemove={(file) => {
+                setImageList((prev) => prev.filter((e) => e.uid !== file.uid));
+              }}
+              multiple
+              accept={["image/png", "image/jpeg", "image/png"]}
+              defaultFileList={[]}
+              fileList={imageList}
+              maxCount={5}
             >
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
