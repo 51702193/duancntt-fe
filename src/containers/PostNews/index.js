@@ -87,12 +87,6 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
     // reader.readAsDataURL(file);
   };
 
-  console.log(
-    'form.getFieldValue("province")',
-    form.getFieldValue("province"),
-    !!form.getFieldValue("province")
-  );
-
   return (
     <Form
       {...layout}
