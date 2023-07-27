@@ -49,7 +49,7 @@ const TopNav = ({ authUser, isLoadingFetchAuthUser }) => {
       <div className="top-nav-navigator">
         <a
           rel="nofollow"
-          class="flex-vertical ht_relative ht_transition nav-link"
+          className="flex-vertical ht_relative ht_transition nav-link"
           href="/dang-tin-tuc"
         >
           Đăng tin tức

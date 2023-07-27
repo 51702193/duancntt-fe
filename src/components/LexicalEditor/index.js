@@ -4,7 +4,6 @@ import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
-import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
 import { ListItemNode, ListNode } from "@lexical/list";
@@ -24,7 +23,7 @@ import CustomHTMLPlugin from "./plugins/CustomHTMLPlugin";
 
 import "./styles.scss";
 
-function Editor() {
+function Editor({ onValuesChange }) {
   const editorConfig = {
     namespace: "Editor",
     // The editor theme
@@ -117,20 +116,29 @@ function Editor() {
 
   return (
     <LexicalComposer initialConfig={editorConfig}>
-      <OnChangePlugin onChange={(editorState) => {}} />
+      {/* <OnChangePlugin
+        onChange={(editorState) => {
+          editorState.read(() => {
+            console.log("aa");
+          });
+          // onValuesChange();
+        }}
+      /> */}
       <div className="editor-container">
         <ToolbarPlugin />
         <div className="editor-inner">
           <RichTextPlugin
             contentEditable={<ContentEditable className="editor-input" />}
             placeholder={
-              <div className="editor-placeholder">Enter some rich text...</div>
+              <div className="editor-placeholder">
+                Hãy viết những mô tả của bạn ở đây...
+              </div>
             }
             ErrorBoundary={LexicalErrorBoundary}
           />
           <HistoryPlugin />
           {/* <TreeViewPlugin /> */}
-          <CustomHTMLPlugin />
+          <CustomHTMLPlugin onValuesChange={onValuesChange} />
           <AutoFocusPlugin />
           <CodeHighlightPlugin />
           <ListPlugin />

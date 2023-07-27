@@ -26,7 +26,7 @@ const validateMessages = {
   },
 };
 
-const PostNews = ({ BE_API_DEFAULT_ROUTE, authUser }) => {
+const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
   const user = null;
   const districts = [];
   const provinces = [];
@@ -36,7 +36,10 @@ const PostNews = ({ BE_API_DEFAULT_ROUTE, authUser }) => {
   const [curPorvince, setCurProvice] = useState(null);
   const [curDistrict, setCurDistrict] = useState(null);
 
-  if (!authUser) {
+  const [form] = Form.useForm();
+  // form.setFieldValue("mota", "Mario");
+
+  if (!authUser && !isLoadingFetchAuthUser) {
     toast.error("Login Required", {
       position: "top-right",
       autoClose: 3000,
@@ -63,57 +66,40 @@ const PostNews = ({ BE_API_DEFAULT_ROUTE, authUser }) => {
   };
 
   const onFinish = (values) => {
-    values.information1.accountEmail = user.Vs.Gt;
-    values.information1.images = values.information1.file.fileList
-      .map((f) => f.xhr.response)
-      .join(",");
-    fetch(`${BE_API_DEFAULT_ROUTE}/tintuc`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values.information1),
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        window.location.replace(`view-details/${responseJson.id}`);
-      })
-      .catch((error) => {
-        message.error(error);
-      });
+    console.log("values finish", values);
+    console.log("form 2", form.getFieldsValue());
   };
 
-  const draggerProps = {
-    name: "file",
-    multiple: true,
-    action: `${BE_API_DEFAULT_ROUTE}/file/upload`,
-    beforeUpload: (file) => {
-      const fileType = ["image/png", "image/jpeg", "image/png"];
-      if (!["image/png", "image/jpeg", "image/png"].includes(file.type)) {
-        message.error(`please using PNG, jpg, jpeg file`);
-      }
-      return fileType.includes(file.type) ? true : Upload.LIST_IGNORE;
-    },
-    onChange(info) {
-      const { status } = info.file;
-      if (status === "done") {
-        info.file.fileName = info.file.xhr.response;
-        message.success(`${info.file.name} file uploaded successfully.`);
-      } else if (status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
+  // const draggerProps = {
+  //   name: "file",
+  //   multiple: true,
+  //   action: `${BE_API_DEFAULT_ROUTE}/file/upload`,
+  //   beforeUpload: (file) => {
+  //     const fileType = ["image/png", "image/jpeg", "image/png"];
+  //     if (!["image/png", "image/jpeg", "image/png"].includes(file.type)) {
+  //       message.error(`please using PNG, jpg, jpeg file`);
+  //     }
+  //     return fileType.includes(file.type) ? true : Upload.LIST_IGNORE;
+  //   },
+  //   onChange(info) {
+  //     const { status } = info.file;
+  //     if (status === "done") {
+  //       info.file.fileName = info.file.xhr.response;
+  //       message.success(`${info.file.name} file uploaded successfully.`);
+  //     } else if (status === "error") {
+  //       message.error(`${info.file.name} file upload failed.`);
+  //     }
+  //   },
+  // };
 
-  return <LexicalEditor />;
+  // return <LexicalEditor />;
 
   return (
     <Form
       {...layout}
-      name="nest-messages"
       onFinish={onFinish}
       validateMessages={validateMessages}
+      form={form}
     >
       <div className="dangtin__container">
         <div className="title">Thông tin cơ bản</div>
@@ -126,8 +112,8 @@ const PostNews = ({ BE_API_DEFAULT_ROUTE, authUser }) => {
             <Input />
           </Form.Item>
           <Form.Item
-            name={["information1", "provinceCode"]}
-            label="Tỉnh"
+            name="province"
+            label="Tỉnh - Thành Phố"
             rules={[{ required: true }]}
           >
             <Select placeholder="Chọn Tỉnh" onChange={handleSetProvince}>
@@ -139,8 +125,8 @@ const PostNews = ({ BE_API_DEFAULT_ROUTE, authUser }) => {
             </Select>
           </Form.Item>
           <Form.Item
-            name={["information1", "districtId"]}
-            label="Quận"
+            name="district"
+            label="Quận - Huyện"
             rules={[{ required: true }]}
           >
             <Select
@@ -156,23 +142,7 @@ const PostNews = ({ BE_API_DEFAULT_ROUTE, authUser }) => {
             </Select>
           </Form.Item>
           <Form.Item
-            name={["information1", "streetsId"]}
-            label="Đường - Phố"
-            rules={[{ required: true }]}
-          >
-            <Select
-              placeholder="Chọn Đường - Phố"
-              disabled={curDistrict === null}
-            >
-              {streets.map((streets) => (
-                <Option key={streets.id} value={streets.id}>
-                  {streets.name}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name={["information1", "wardId"]}
+            name="ward"
             label="Phường - Xã"
             rules={[{ required: true }]}
           >
@@ -188,81 +158,32 @@ const PostNews = ({ BE_API_DEFAULT_ROUTE, authUser }) => {
             </Select>
           </Form.Item>
           <Form.Item
-            name={["information1", "chudautu"]}
-            label="Chủ đầu tư"
+            name="motanhanh"
+            label="Mô tả nhanh"
             rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name={["information1", "donviphattrien"]}
-            label="Đơn vị phát triển dự án"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name={["information1", "loaihinhsanpham"]}
-            label="Loại hình sản phẩm"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name={["information1", "tongdientich"]}
-            label="Tổng diện tích"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name={["information1", "matdodato"]}
-            label="Mật độ đất ở chiếm"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name={["information1", "tienichcongcong"]}
-            label="Tiện ích công cộng"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name={["information1", "baogom"]}
-            label="Bao gồm"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name={["information1", "dientich"]}
-            label="Diện tích"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name={["information1", "giaban"]}
-            label="Giá bán"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name={["information1", "mota"]}
-            label="Mô tả"
-            rules={[{ required: true }]}
+            initialValue=""
           >
             <Input.TextArea />
           </Form.Item>
           <Form.Item
-            name={["information1", "file"]}
+            name="baiviet"
+            label="Bài viết"
+            rules={[{ required: true }]}
+            initialValue=""
+          >
+            <LexicalEditor
+              onValuesChange={(value) => {
+                form.setFieldValue("baiviet", value);
+              }}
+            />
+          </Form.Item>
+          <Form.Item
+            name="images"
             label="Hình Ảnh"
             rules={[{ required: true }]}
           >
-            <Upload.Dragger {...draggerProps}>
+            <Upload.Dragger //{...draggerProps}
+            >
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
               </p>
@@ -279,7 +200,7 @@ const PostNews = ({ BE_API_DEFAULT_ROUTE, authUser }) => {
 
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
         <Button type="primary" htmlType="submit">
-          Submit
+          Đăng Tin Tức
         </Button>
       </Form.Item>
     </Form>
