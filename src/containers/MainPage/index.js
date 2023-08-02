@@ -35,7 +35,6 @@ function MainPage() {
   const { isLoadingTopDuAn, data: topDuAn } = useFetch(
     "https://dacntt2-n092-be.netlify.app/.netlify/functions/api/top-du-an"
   );
-  console.log("🚀 ~ file: index.js:36 ~ MainPage ~ topDuAn:", topDuAn);
 
   useEffect(() => {
     onGetProvinceList();
@@ -45,7 +44,9 @@ function MainPage() {
 
   const handleSetProvince = useCallback(
     (province) => {
-      setCurProvince(provinces?.find((p) => p.provinceId === province));
+      setCurProvince(
+        provinces?.find((p) => p.provinceId === province)?.provinceId
+      );
       setCurDistrict(null);
       setCurWard(null);
     },
@@ -54,7 +55,9 @@ function MainPage() {
 
   const handleSetDistrict = useCallback(
     (district) => {
-      setCurDistrict(districts?.find((p) => p.districtId === district));
+      setCurDistrict(
+        districts?.find((p) => p.districtId === district)?.districtId
+      );
       setCurWard(null);
     },
     [districts]
@@ -62,23 +65,13 @@ function MainPage() {
 
   const handleSetWard = useCallback(
     (ward) => {
-      setCurWard(wards?.find((p) => p.wardId === ward));
+      setCurWard(wards?.find((p) => p.wardId === ward)?.wardId);
     },
     [wards]
   );
 
   return (
-    <Content>
-      <div
-        style={{
-          position: "absolute",
-          top: "1rem",
-          zIndex: 9999,
-          left: "99%",
-          transform: "translateX(-100%)",
-        }}
-      ></div>
-
+    <Content className="landing-page">
       <div className="home-banner">
         <Row gutter={24} className="search-banner">
           <Col>
@@ -138,7 +131,13 @@ function MainPage() {
               style={{ height: "100%", display: "flex", alignItems: "center" }}
             >
               <Button
-                // href={`search?province=${curProvince}&district=${curDistrict}&ward=${curWard}}`}
+                href={`cong-dong-du-an?filter=${btoa(
+                  JSON.stringify({
+                    province: curProvince,
+                    district: curDistrict,
+                    ward: curWard,
+                  })
+                )}`}
                 icon={<SearchOutlined />}
               >
                 Search
@@ -161,7 +160,7 @@ function MainPage() {
             </div>
           ) : (
             topDuAn?.map((tintuc, idx) => {
-              const ViewDetailsUrl = `/view-details/${tintuc.id}`;
+              const ViewDetailsUrl = `/duan/${tintuc.id}`;
               return (
                 <div className="home-product" key={tintuc.id}>
                   <div className="product-thumb">
@@ -174,7 +173,7 @@ function MainPage() {
                     </a>
                   </div>
                   <div className="home-product-bound">
-                    <a href="/" className="product-address">
+                    <a href={ViewDetailsUrl} className="product-address">
                       {tintuc.vitri}
                     </a>
                     <a href={ViewDetailsUrl} className="product-title">

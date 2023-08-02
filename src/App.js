@@ -23,7 +23,7 @@ const router = (props) => {
     createRoutesFromElements(
       <>
         <Route path="/" element={<MainPage />}></Route>
-        {/* <Route path="/cong-dong-du-an" element={<ViewAll />} /> */}
+        <Route path="/cong-dong-du-an" element={<ViewAll />} />
         <Route path="/duan/:id" element={<ViewDetails />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/dang-tin-tuc" element={<PostNews {...props} />} />

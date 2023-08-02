@@ -54,6 +54,13 @@ const TopNav = ({ authUser, isLoadingFetchAuthUser }) => {
         >
           Đăng tin tức
         </a>
+        <a
+          rel="nofollow"
+          className="flex-vertical ht_relative ht_transition nav-link"
+          href="/cong-dong-du-an"
+        >
+          Cộng đồng dự án
+        </a>
       </div>
       <div className="top-nav-chart">
         <div className="chart_img ht_flex">
