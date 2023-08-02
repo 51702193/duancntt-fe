@@ -34,10 +34,6 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
   ] = useAPI({
     url: "/provinces",
   });
-  console.log(
-    "🚀 ~ file: index.js:35 ~ PostNews ~ isLoadingProvincesData:",
-    isLoadingProvincesData
-  );
   const [
     { isLoading: isLoadingDistrictsData, data: districts = [] },
     onGetDistrictList,
@@ -52,6 +48,8 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
   const [imageList, setImageList] = useState([]);
 
   const [form] = Form.useForm();
+  const province = Form.useWatch("province", form);
+  const district = Form.useWatch("district", form);
   // form.setFieldValue("mota", "Mario");
 
   useEffect(() => {
@@ -76,8 +74,8 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
   }
 
   const onFinish = (values) => {
-    console.log("values finish", values);
-    console.log("form 2", form.getFieldsValue());
+    console.log("values finish", values, imageList);
+    // console.log("form 2", form.getFieldsValue());
 
     // var reader = new FileReader();
     // reader.onloadend = function () {
@@ -108,8 +106,13 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
             name="province"
             label="Tỉnh - Thành Phố"
             rules={[{ required: true }]}
+            disabled={isLoadingProvincesData}
           >
-            <Select placeholder="Chọn Tỉnh" loading={isLoadingProvincesData}>
+            <Select
+              placeholder="Chọn Tỉnh"
+              loading={isLoadingProvincesData}
+              disabled={isLoadingProvincesData}
+            >
               {provinces.map((province) => (
                 <Option
                   key={`province${province.provinceId}`}
@@ -127,7 +130,7 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
           >
             <Select
               placeholder="Chọn Quận"
-              disabled={!form.getFieldValue("province")}
+              disabled={!province || isLoadingDistrictsData}
               loading={isLoadingDistrictsData}
             >
               {districts.map((district) => (
@@ -147,7 +150,7 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
           >
             <Select
               placeholder="Chọn Phường - Xã"
-              disabled={!form.getFieldValue("district")}
+              disabled={!district || isLoadingWardsData}
               loading={isLoadingWardsData}
             >
               {wards.map((ward) => (
@@ -180,7 +183,7 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
           <Form.Item
             name="images"
             label="Hình Ảnh"
-            rules={[{ required: true }]}
+            // rules={[{ required: true }]}
           >
             <Upload.Dragger
               beforeUpload={(file) => {
