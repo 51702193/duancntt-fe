@@ -159,28 +159,28 @@ function MainPage() {
               Hiện không có tin tức
             </div>
           ) : (
-            topDuAn?.map((tintuc, idx) => {
-              const ViewDetailsUrl = `/duan/${tintuc.id}`;
+            topDuAn?.map((tintuc) => {
+              const ViewDetailsUrl = `/duan/${tintuc.data.id}`;
               return (
-                <div className="home-product" key={tintuc.id}>
+                <div className="home-product" key={tintuc._id}>
                   <div className="product-thumb">
                     <a href={ViewDetailsUrl}>
                       <img
                         className="ls-is-cached lazyloaded"
                         alt="first-img"
-                        src={tintuc.image}
+                        src={tintuc.data.images[0]}
                       />
                     </a>
                   </div>
                   <div className="home-product-bound">
                     <a href={ViewDetailsUrl} className="product-address">
-                      {tintuc.vitri}
+                      {tintuc.data.vitri}
                     </a>
                     <a href={ViewDetailsUrl} className="product-title">
-                      {tintuc.tenduan}
+                      {tintuc.data.tenduan}
                     </a>
 
-                    <div className="product-desc">{tintuc.mota}</div>
+                    <div className="product-desc">{tintuc.data.motanhanh}</div>
                   </div>
                 </div>
               );

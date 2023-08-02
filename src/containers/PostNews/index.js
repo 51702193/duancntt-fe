@@ -44,6 +44,13 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
     useAPI({
       url: "/wards",
     });
+  const [
+    { isLoading: isLoadingPostFormData, data: formDataResponse = {} },
+    onPostFormData,
+  ] = useAPI({
+    url: "/dang-tin-tuc",
+    method: "post",
+  });
 
   const [imageList, setImageList] = useState([]);
 
@@ -77,12 +84,21 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
     console.log("values finish", values, imageList);
     // console.log("form 2", form.getFieldsValue());
 
-    // var reader = new FileReader();
-    // reader.onloadend = function () {
-    //   // console.log("RESULT", reader.result);
-    //   setImageList(reader.result);
-    // };
-    // reader.readAsDataURL(file);
+    onPostFormData({
+      data: { ...values, images: imageList?.map((e) => e.base64) },
+      callback: () => {
+        toast.success("Đăng tin tức thành công", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      },
+    });
   };
 
   return (
@@ -183,11 +199,19 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
           <Form.Item
             name="images"
             label="Hình Ảnh"
-            // rules={[{ required: true }]}
+            rules={[{ required: true }]}
           >
             <Upload.Dragger
               beforeUpload={(file) => {
-                setImageList((prev) => [...prev, file]);
+                var reader = new FileReader();
+                reader.onloadend = function () {
+                  // console.log("RESULT", reader.result);
+                  setImageList((prev) => [
+                    ...prev,
+                    { file: file, base64: reader.result },
+                  ]);
+                };
+                reader.readAsDataURL(file);
                 return false;
               }}
               onRemove={(file) => {
@@ -196,7 +220,7 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
               multiple
               accept={["image/png", "image/jpeg", "image/png"]}
               defaultFileList={[]}
-              fileList={imageList}
+              fileList={imageList?.map((e) => e.file)}
               maxCount={5}
             >
               <p className="ant-upload-drag-icon">

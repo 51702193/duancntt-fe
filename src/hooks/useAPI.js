@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 
-const useAPI = ({ url }) => {
+const useAPI = ({ url, method }) => {
   const [data, setData] = useState({ isLoading: false });
 
   const instance = axios.create({
@@ -40,7 +40,23 @@ const useAPI = ({ url }) => {
     // });
   };
 
-  return [data, onGetRequest];
+  const onPostRequest = ({ data, callback }) => {
+    console.log("🚀 ~ file: useAPI.js:44 ~ onPostRequest ~ data:", data);
+    instance
+      .post(url, {
+        data,
+      })
+      .then(function (response) {
+        if (callback) {
+          callback();
+        }
+        setData({ data: response?.data, isLoading: false });
+      });
+  };
+
+  const onRequest = method === "post" ? onPostRequest : onGetRequest;
+
+  return [data, onRequest];
 };
 
 export default useAPI;
