@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Layout, Row, Col, Select, Button } from "antd";
+import { Layout, Row, Col, Select, Button, Spin } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { memo, useCallback, useEffect, useState } from "react";
 
@@ -32,7 +32,8 @@ function MainPage() {
     useAPI({
       url: "/wards",
     });
-  const { isLoadingTopDuAn, data: topDuAn } = useFetch(
+
+  const { isLoading: isLoadingTopDuAn, data: topDuAn } = useFetch(
     "https://dacntt2-n092-be.netlify.app/.netlify/functions/api/top-du-an"
   );
 
@@ -154,13 +155,15 @@ function MainPage() {
           <h2 className="title">Bất động sản dành cho bạn</h2>
         </div>
         <div className="dailynews-banner__body">
-          {!topDuAn ? (
+          {isLoadingTopDuAn ? (
+            <Spin />
+          ) : !topDuAn ? (
             <div style={{ fontSize: "25px", fontWeight: 600 }}>
               Hiện không có tin tức
             </div>
           ) : (
             topDuAn?.map((tintuc) => {
-              const ViewDetailsUrl = `/duan/${tintuc.data.id}`;
+              const ViewDetailsUrl = `/duan/${tintuc._id}`;
               return (
                 <div className="home-product" key={tintuc._id}>
                   <div className="product-thumb">

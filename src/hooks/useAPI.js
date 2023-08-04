@@ -5,8 +5,8 @@ const useAPI = ({ url, method }) => {
   const [data, setData] = useState({ isLoading: false });
 
   const instance = axios.create({
-    baseURL: "https://dacntt2-n092-be.netlify.app/.netlify/functions/api",
-    // baseURL: "http://localhost:5000/.netlify/functions/api",
+    // baseURL: "https://dacntt2-n092-be.netlify.app/.netlify/functions/api",
+    baseURL: "http://localhost:5000/.netlify/functions/api",
   });
 
   instance.interceptors.request.use(
@@ -30,11 +30,10 @@ const useAPI = ({ url, method }) => {
       .then(function (response) {
         // console.log(response);
         setData({ data: response?.data, isLoading: false });
+      })
+      .catch(function (error) {
+        setData({ data: null, isLoading: false, error });
       });
-    // .catch(function (error) {
-    //   // xử trí khi bị lỗi
-    //   console.log(error);
-    // })
     // .finally(function () {
     //   // luôn luôn được thực thi
     // });

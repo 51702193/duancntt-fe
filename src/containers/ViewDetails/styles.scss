@@ -1,8 +1,21 @@
 .view-details-page {
+  display: flex;
+
+  .loading-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(100vh - 104px);
+    background-image: url(../../assets/divisive-bg.png);
+  }
+
   .left-section {
-    min-height: calc(100vh - 104px);
+    height: calc(100vh - 104px);
     background-image: url(../../assets/divisive-bg.png);
     padding-top: 24px;
+    flex: 3;
+    overflow-y: auto;
 
     &__header {
       display: flex;
@@ -27,6 +40,7 @@
 
     &__location-group {
       padding-left: 32px;
+      padding-bottom: 24px;
       margin-top: 24px;
 
       .location {
@@ -55,6 +69,15 @@
         font-size: 20px;
         margin-bottom: 32px;
       }
+    }
+  }
+
+  .right-section {
+    flex: 2;
+    height: calc(100vh - 104px);
+
+    .image-carousel {
+      height: calc(100vh - 104px);
     }
   }
 }

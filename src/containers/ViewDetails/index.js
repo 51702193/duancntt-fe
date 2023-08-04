@@ -1,8 +1,12 @@
 import { Carousel } from "antd";
 import useFetch from "react-fetch-hook";
 import { useParams } from "react-router-dom";
+import { Spin } from "antd";
 
 import "./styles.scss";
+import useAPI from "../../hooks/useAPI";
+import { useEffect } from "react";
+import { uid } from "uid";
 
 const data = {
   id: "letrock!",
@@ -16,29 +20,42 @@ const data = {
   images: [],
 };
 
-const ViewDetails = ({ BE_API_DEFAULT_ROUTE }) => {
+const ViewDetails = () => {
   let { id } = useParams();
-  // const { isLoading, data } = useFetch(`${BE_API_DEFAULT_ROUTE}/tintuc/${id}`);
 
-  // if (isLoading) {
-  //   return <>Loading</>;
-  // }
-  // if (!data) {
-  //   return <>Not Found</>;
-  // }
+  const [{ isLoading, data }, onGetData] = useAPI({
+    url: `/du-an?id=${id}`,
+  });
+  useEffect(() => {
+    onGetData();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="view-details-page">
+        <section className="loading-screen">
+          <Spin size="large" />
+        </section>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="view-details-page">
+        <section className="left-section">
+          <div className="left-section__header">
+            <div className="line" />
+            <h1 className="ten-du-an">Not Found</h1>
+            <div className="line" />
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="view-details-page">
-      {/* <Carousel className="carousel-container" autoplay>
-        {data.images.split(",").map((i) => (
-          <img
-            key={i}
-            alt="img"
-            className="image-carousel"
-            src={`${BE_API_DEFAULT_ROUTE}/file/download/${i}`}
-          ></img>
-        ))}
-      </Carousel> */}
       <section className="left-section">
         <div className="left-section__header">
           <div className="line" />
@@ -47,13 +64,13 @@ const ViewDetails = ({ BE_API_DEFAULT_ROUTE }) => {
         </div>
         <div className="left-section__location-group">
           <a className="location" href="/">
-            {data.province}
+            {data.province.province}
           </a>
           <a className="location" href="/">
-            {data.district}
+            {data.district.district}
           </a>
           <a className="location" href="/">
-            {data.ward}
+            {data.ward.ward}
           </a>
         </div>
         <div className="left-section__informations">
@@ -64,6 +81,20 @@ const ViewDetails = ({ BE_API_DEFAULT_ROUTE }) => {
           />
         </div>
       </section>
+      {data?.images?.length > 0 && (
+        <section className="right-section">
+          <Carousel className="carousel-container" autoplay>
+            {data.images.map((i) => (
+              <img
+                key={uid()}
+                alt="img"
+                className="image-carousel"
+                src={i}
+              ></img>
+            ))}
+          </Carousel>
+        </section>
+      )}
     </div>
   );
 };
