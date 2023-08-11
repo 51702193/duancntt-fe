@@ -22,25 +22,21 @@ const useAPI = ({ url, method }) => {
     }
   );
 
-  const onGetRequest = () => {
+  const onGetRequest = (params) => {
+    const { data } = params || {};
     instance
       .get(url, {
-        // timeout: 5000,
+        params: data,
       })
       .then(function (response) {
-        // console.log(response);
         setData({ data: response?.data, isLoading: false });
       })
       .catch(function (error) {
         setData({ data: null, isLoading: false, error });
       });
-    // .finally(function () {
-    //   // luôn luôn được thực thi
-    // });
   };
 
   const onPostRequest = ({ data, callback }) => {
-    console.log("🚀 ~ file: useAPI.js:44 ~ onPostRequest ~ data:", data);
     instance
       .post(url, {
         data,

@@ -66,7 +66,7 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
   }, []);
 
   if (!authUser && !isLoadingFetchAuthUser) {
-    toast.error("Login Required", {
+    toast.error("Bạn hãy đăng nhập để trải nghiệm tính năng nha!", {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
