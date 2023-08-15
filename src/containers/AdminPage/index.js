@@ -1,81 +1,42 @@
-import { Button } from 'antd';
-import React from 'react'
-import useFetch from "react-fetch-hook";
-import { useHistory } from "react-router-dom";
+import { Layout } from "antd";
+import { memo } from "react";
 
-import { List, Avatar } from 'antd';
+import "./styles.scss";
+import { useSearchParams } from "react-router-dom";
+import ListDuAn from "../../components/ListDuAn";
+import SearchBanner from "../../components/SearchBanner";
 
-import './styles.scss';
+const { Content } = Layout;
 
-const AdminPage = ({ BE_API_DEFAULT_ROUTE }) => {
-    // let history = useHistory();
-    const { isLoading, data } = useFetch(`${BE_API_DEFAULT_ROUTE}/tintuc/admin`);
+function AdminPage() {
+  const [searchParams] = useSearchParams();
+  const filter = JSON.parse(atob(searchParams.get("filter") || "e30="));
 
-    if (isLoading) {
-        return <>Loading</>;
-    }
-    if (!data) {
-        return <>Currently No Data Or Server Error</>;
-    }
+  return (
+    <Content className="view-all-page">
+      <div className="home-banner">
+        <SearchBanner />
+      </div>
 
-    const listData = data.map(d => ({
-        id: d.id,
-        href: `/view-details/${d.id}`,
-        title: d.tenduan,
-        type: d.type,
-        avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-        description: `Đăng bởi: ${d.accountEmail} - ${new Date(d.created_date).toLocaleDateString()}`,
-        content: d.mota.length > 500 ? d.mota.substring(0, 500) + "..." : d.mota
-    }))
-
-    return (
-        <List
-            itemLayout="horizontal"
-            size="large"
-            pagination={{
-                pageSize: 5,
+      <div className="dailynews-banner">
+        <div className="dailynews-banner__top">
+          <h2 className="title">Danh sách dự án</h2>
+        </div>
+        <div className="dailynews-banner__body">
+          <ListDuAn filter={{ ...filter, pageSize: 99 }} />
+        </div>
+        {/* <div className="dailynews-banner__footer">
+          <Pagination
+            pageSize={9}
+            total={50}
+            onChange={(e) => {
+              console.log("asdasd", e);
             }}
-            dataSource={listData}
-            renderItem={item => (
-                <List.Item
-                    key={item.id}
-                    actions={[
-                        <Button key="list-view" href={item.href}>view</Button>,
-                        <Button key="list-approve" disabled={item.type === 1} onClick={() => {
-                            fetch(`${BE_API_DEFAULT_ROUTE}/tintuc/approve/${item.id}`, {
-                                method: 'POST',
-                                headers: {
-                                    'Accept': 'application/json',
-                                    'Content-Type': 'application/json',
-                                }
-                            }).then(
-                                // () => { history.push(item.href) }
-                            )
-                        }}>approve</Button>,
-                        <Button key="list-reject" disabled={item.type === -1} onClick={() => {
-                            fetch(`${BE_API_DEFAULT_ROUTE}/tintuc/reject/${item.id}`, {
-                                method: 'POST',
-                                headers: {
-                                    'Accept': 'application/json',
-                                    'Content-Type': 'application/json',
-                                }
-                            }).then(
-                                // () => { history.go(0) }
-                            )
-                        }}>reject</Button>
-                    ]}
-                >
-                    <List.Item.Meta
-                        avatar={<Avatar src={item.avatar} />}
-                        title={<a href={item.href}>{item.title}</a>}
-                        description={item.description}
-                    />
-                    {item.content}
-                </List.Item>
-            )}
-        />
-
-    );
+          />
+        </div> */}
+      </div>
+    </Content>
+  );
 }
 
-export default AdminPage;
+export default memo(AdminPage);

@@ -4,9 +4,10 @@ import { InboxOutlined } from "@ant-design/icons";
 
 import "./styles.scss";
 import LexicalEditor from "../../components/LexicalEditor";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAPI from "../../hooks/useAPI";
+import moment from "moment/moment";
 
 const { Option } = Select;
 
@@ -38,6 +39,8 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
   const district = Form.useWatch("district", form);
   // form.setFieldValue("mota", "Mario");
 
+  let navigate = useNavigate();
+
   const [
     { isLoading: isLoadingProvincesData, data: provinces = [] },
     onGetProvinceList,
@@ -61,16 +64,24 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
     url: "/dang-tin-tuc",
     method: "post",
   });
-  console.log(
-    "🚀 ~ file: index.js:49 ~ PostNews ~ formDataResponse:",
-    formDataResponse
-  );
+
+  useEffect(() => {
+    if (formDataResponse?.insertedId) {
+      navigate(`/duan/${formDataResponse?.insertedId}`);
+    }
+  }, [formDataResponse]);
 
   useEffect(() => {
     onGetProvinceList();
-    onGetDistrictList();
-    onGetWardList();
   }, []);
+
+  useEffect(() => {
+    onGetDistrictList({ data: { province: curProvince } });
+  }, [curProvince]);
+
+  useEffect(() => {
+    onGetWardList({ data: { district: curDistrict } });
+  }, [curDistrict]);
 
   const handleSetProvince = useCallback(
     (province) => {
@@ -117,11 +128,15 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
 
     return <Navigate to="/" replace />;
   }
-
   const onFinish = (values) => {
     // console.log("values finish", values, imageList);
     onPostFormData({
-      data: { ...values, images: imageList?.map((e) => e.base64) },
+      data: {
+        ...values,
+        images: imageList?.map((e) => e.base64),
+        user: authUser.email,
+        time: moment().format("DD-MM-YYYY::HHgiờ-MMp"),
+      },
       callback: () => {
         toast.success("Đăng tin tức thành công", {
           position: "top-right",

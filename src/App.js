@@ -34,16 +34,19 @@ const router = (props) => {
 };
 
 const App = memo(() => {
-  const { isLoadingFetchAuthUser, authUser } = useUser();
+  const { isLoadingFetchAuthUser, authUser, isAdmin } = useUser();
 
   return (
     <>
       <TopNav
         authUser={authUser}
         isLoadingFetchAuthUser={isLoadingFetchAuthUser}
+        isAdmin={isAdmin}
       />
       <main className="main">
-        <RouterProvider router={router({ authUser, isLoadingFetchAuthUser })} />
+        <RouterProvider
+          router={router({ isAdmin, authUser, isLoadingFetchAuthUser })}
+        />
       </main>
     </>
   );
