@@ -88,6 +88,7 @@ const SearchBanner = ({ onChange }) => {
             onChange={handleSetProvince}
             loading={isLoadingProvincesData}
             disabled={isLoadingProvincesData}
+            value={curProvince}
           >
             {provinces.map((province) => (
               <Option key={province.provinceId} value={province.provinceId}>
@@ -104,6 +105,7 @@ const SearchBanner = ({ onChange }) => {
             placeholder="Chọn Quận Huyện"
             onChange={handleSetDistrict}
             disabled={curProvince === null || isLoadingDistrictsData}
+            value={curDistrict}
           >
             {districts?.map((district) => (
               <Option
@@ -123,6 +125,7 @@ const SearchBanner = ({ onChange }) => {
             placeholder="Chọn Phường - Xã"
             onChange={handleSetWard}
             disabled={curDistrict === null || isLoadingWardsData}
+            value={curWard}
           >
             {wards?.map((ward) => (
               <Option key={`ward${ward.wardId}`} value={ward.wardId}>

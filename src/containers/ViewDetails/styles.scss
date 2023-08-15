@@ -73,8 +73,13 @@
   }
 
   .right-section {
-    flex: 2;
+    flex: 3;
+    max-width: 40%;
     height: calc(100vh - 104px);
+
+    .carousel-container {
+      width: 100%;
+    }
 
     .image-carousel {
       height: calc(100vh - 104px);

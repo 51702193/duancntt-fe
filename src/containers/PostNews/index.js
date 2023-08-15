@@ -1,5 +1,5 @@
 import { Form, Input, Button, Select, Upload, message } from "antd";
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { InboxOutlined } from "@ant-design/icons";
 
 import "./styles.scss";
@@ -28,6 +28,16 @@ const validateMessages = {
 };
 
 const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
+  const [curProvince, setCurProvince] = useState(null);
+  const [curDistrict, setCurDistrict] = useState(null);
+  const [curWard, setCurWard] = useState(null);
+  const [imageList, setImageList] = useState([]);
+
+  const [form] = Form.useForm();
+  const province = Form.useWatch("province", form);
+  const district = Form.useWatch("district", form);
+  // form.setFieldValue("mota", "Mario");
+
   const [
     { isLoading: isLoadingProvincesData, data: provinces = [] },
     onGetProvinceList,
@@ -51,19 +61,47 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
     url: "/dang-tin-tuc",
     method: "post",
   });
-
-  const [imageList, setImageList] = useState([]);
-
-  const [form] = Form.useForm();
-  const province = Form.useWatch("province", form);
-  const district = Form.useWatch("district", form);
-  // form.setFieldValue("mota", "Mario");
+  console.log(
+    "🚀 ~ file: index.js:49 ~ PostNews ~ formDataResponse:",
+    formDataResponse
+  );
 
   useEffect(() => {
     onGetProvinceList();
     onGetDistrictList();
     onGetWardList();
   }, []);
+
+  const handleSetProvince = useCallback(
+    (province) => {
+      setCurProvince(
+        provinces?.find((p) => p.provinceId === province)?.provinceId
+      );
+      setCurDistrict(null);
+      setCurWard(null);
+      form.setFieldValue("district", null);
+      form.setFieldValue("ward", null);
+    },
+    [provinces]
+  );
+
+  const handleSetDistrict = useCallback(
+    (district) => {
+      setCurDistrict(
+        districts?.find((p) => p.districtId === district)?.districtId
+      );
+      setCurWard(null);
+      form.setFieldValue("ward", null);
+    },
+    [districts]
+  );
+
+  const handleSetWard = useCallback(
+    (ward) => {
+      setCurWard(wards?.find((p) => p.wardId === ward)?.wardId);
+    },
+    [wards]
+  );
 
   if (!authUser && !isLoadingFetchAuthUser) {
     toast.error("Bạn hãy đăng nhập để trải nghiệm tính năng nha!", {
@@ -81,9 +119,7 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
   }
 
   const onFinish = (values) => {
-    console.log("values finish", values, imageList);
-    // console.log("form 2", form.getFieldsValue());
-
+    // console.log("values finish", values, imageList);
     onPostFormData({
       data: { ...values, images: imageList?.map((e) => e.base64) },
       callback: () => {
@@ -128,6 +164,8 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
               placeholder="Chọn Tỉnh"
               loading={isLoadingProvincesData}
               disabled={isLoadingProvincesData}
+              value={curProvince}
+              onChange={handleSetProvince}
             >
               {provinces.map((province) => (
                 <Option
@@ -148,6 +186,8 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
               placeholder="Chọn Quận"
               disabled={!province || isLoadingDistrictsData}
               loading={isLoadingDistrictsData}
+              value={curDistrict}
+              onChange={handleSetDistrict}
             >
               {districts.map((district) => (
                 <Option
@@ -168,6 +208,8 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
               placeholder="Chọn Phường - Xã"
               disabled={!district || isLoadingWardsData}
               loading={isLoadingWardsData}
+              value={curWard}
+              onChange={handleSetWard}
             >
               {wards.map((ward) => (
                 <Option key={`ward${ward.wardId}`} value={ward.wardId}>
@@ -184,12 +226,7 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
           >
             <Input.TextArea />
           </Form.Item>
-          <Form.Item
-            name="baiviet"
-            label="Bài viết"
-            rules={[{ required: true }]}
-            initialValue=""
-          >
+          <Form.Item name="baiviet" label="Bài viết" initialValue="">
             <LexicalEditor
               onValuesChange={(value) => {
                 form.setFieldValue("baiviet", value);
@@ -203,6 +240,10 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
           >
             <Upload.Dragger
               beforeUpload={(file) => {
+                if (imageList.length >= 5) {
+                  return false;
+                }
+
                 var reader = new FileReader();
                 reader.onloadend = function () {
                   // console.log("RESULT", reader.result);
@@ -215,7 +256,9 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
                 return false;
               }}
               onRemove={(file) => {
-                setImageList((prev) => prev.filter((e) => e.uid !== file.uid));
+                setImageList((prev) =>
+                  prev.filter((e) => e.file.uid !== file.uid)
+                );
               }}
               multiple
               accept={["image/png", "image/jpeg", "image/png"]}
@@ -238,7 +281,11 @@ const PostNews = ({ authUser, isLoadingFetchAuthUser }) => {
       </div>
 
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-        <Button type="primary" htmlType="submit">
+        <Button
+          disabled={isLoadingPostFormData}
+          type="primary"
+          htmlType="submit"
+        >
           Đăng Tin Tức
         </Button>
       </Form.Item>
