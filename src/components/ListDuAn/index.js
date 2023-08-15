@@ -1,15 +1,25 @@
 import React, { useEffect } from "react";
 import useAPI from "../../hooks/useAPI";
-import { Spin } from "antd";
+import { Button, Spin } from "antd";
 
-const ListDuAn = ({ filter }) => {
+import "./styles.scss";
+import useTinTuc from "../../hooks/useTinTuc";
+import { TINTUC_STATUS } from "../../constants";
+
+const ListDuAn = ({ filter, isAdmin }) => {
   const [{ isLoading: isLoadingListDuAn, data: ListDuAn = [] }, onGetListDuAn] =
     useAPI({
       url: "/list-du-an",
     });
+  const { updateTinTuc, isLoadingUpdateTinTuc } = useTinTuc();
 
   useEffect(() => {
-    onGetListDuAn({ data: filter });
+    onGetListDuAn({
+      data: {
+        ...filter,
+        status: isAdmin ? TINTUC_STATUS.SUBMITTED : TINTUC_STATUS.APPROVED,
+      },
+    });
   }, [filter]);
 
   return isLoadingListDuAn ? (
@@ -39,8 +49,42 @@ const ListDuAn = ({ filter }) => {
             <a href={ViewDetailsUrl} className="product-title">
               {tintuc.data.tenduan}
             </a>
-
             <div className="product-desc">{tintuc.data.motanhanh}</div>
+            {isAdmin && (
+              <div className="button-group">
+                <Button
+                  type="primary"
+                  disabled={
+                    isLoadingUpdateTinTuc ||
+                    tintuc.data.status === TINTUC_STATUS.APPROVED
+                  }
+                  onClick={() =>
+                    updateTinTuc({
+                      status: TINTUC_STATUS.APPROVED,
+                      id: tintuc._id,
+                    })
+                  }
+                >
+                  Approve
+                </Button>
+                <Button
+                  type="primary"
+                  danger
+                  disabled={
+                    isLoadingUpdateTinTuc ||
+                    tintuc.data.status === TINTUC_STATUS.REJECTED
+                  }
+                  onClick={() =>
+                    updateTinTuc({
+                      status: TINTUC_STATUS.REJECTED,
+                      id: tintuc._id,
+                    })
+                  }
+                >
+                  Reject
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       );

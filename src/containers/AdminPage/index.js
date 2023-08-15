@@ -8,7 +8,7 @@ import SearchBanner from "../../components/SearchBanner";
 
 const { Content } = Layout;
 
-function AdminPage() {
+function AdminPage({ isAdmin }) {
   const [searchParams] = useSearchParams();
   const filter = JSON.parse(atob(searchParams.get("filter") || "e30="));
 
@@ -23,7 +23,7 @@ function AdminPage() {
           <h2 className="title">Danh sách dự án</h2>
         </div>
         <div className="dailynews-banner__body">
-          <ListDuAn filter={{ ...filter, pageSize: 99 }} />
+          <ListDuAn isAdmin={isAdmin} filter={{ ...filter, pageSize: 99 }} />
         </div>
         {/* <div className="dailynews-banner__footer">
           <Pagination

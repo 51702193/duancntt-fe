@@ -24,8 +24,8 @@ const router = (props) => {
       <>
         <Route path="/" element={<MainPage />}></Route>
         <Route path="/cong-dong-du-an" element={<ViewAll />} />
-        <Route path="/duan/:id" element={<ViewDetails />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/duan/:id" element={<ViewDetails {...props} />} />
+        <Route path="/admin" element={<AdminPage {...props} />} />
         <Route path="/dang-tin-tuc" element={<PostNews {...props} />} />
         <Route path="*" element={<div>404 not found</div>} />
       </>

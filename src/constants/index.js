@@ -5,4 +5,10 @@ const LOADING_STATE = {
   FAILURE: "failure",
 };
 
-export { LOADING_STATE };
+const TINTUC_STATUS = {
+  APPROVED: "APPROVED",
+  REJECTED: "REJECTED",
+  SUBMITTED: "SUBMITTED",
+};
+
+export { LOADING_STATE, TINTUC_STATUS };

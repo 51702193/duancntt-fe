@@ -1,5 +1,4 @@
-import { Carousel } from "antd";
-import useFetch from "react-fetch-hook";
+import { Button, Carousel } from "antd";
 import { useParams } from "react-router-dom";
 import { Spin } from "antd";
 
@@ -7,25 +6,17 @@ import "./styles.scss";
 import useAPI from "../../hooks/useAPI";
 import { useEffect } from "react";
 import { uid } from "uid";
+import { TINTUC_STATUS } from "../../constants";
+import useTinTuc from "../../hooks/useTinTuc";
 
-const data = {
-  id: "letrock!",
-  tenduan: "asdnkjasd",
-  province: "02",
-  district: "002",
-  ward: "00004",
-  motanhanh: "sadasdasd",
-  baiviet:
-    '<p class="editor-paragraph" dir="ltr"><span>asdjasndhjkasd</span></p>',
-  images: [],
-};
-
-const ViewDetails = () => {
-  let { id } = useParams();
+const ViewDetails = ({ isAdmin }) => {
+  const { id } = useParams();
+  const { isLoadingUpdateTinTuc, updateTinTuc } = useTinTuc();
 
   const [{ isLoading, data }, onGetData] = useAPI({
     url: `/du-an?id=${id}`,
   });
+
   useEffect(() => {
     onGetData();
   }, []);
@@ -57,6 +48,39 @@ const ViewDetails = () => {
   return (
     <div className="view-details-page">
       <section className="left-section">
+        {isAdmin && (
+          <div className="left-section__button-group">
+            <Button
+              type="primary"
+              disabled={
+                isLoadingUpdateTinTuc || data.status === TINTUC_STATUS.APPROVED
+              }
+              onClick={() =>
+                updateTinTuc({
+                  status: TINTUC_STATUS.APPROVED,
+                  id: id,
+                })
+              }
+            >
+              Approve
+            </Button>
+            <Button
+              type="primary"
+              danger
+              disabled={
+                isLoadingUpdateTinTuc || data.status === TINTUC_STATUS.REJECTED
+              }
+              onClick={() =>
+                updateTinTuc({
+                  status: TINTUC_STATUS.REJECTED,
+                  id: id,
+                })
+              }
+            >
+              Reject
+            </Button>
+          </div>
+        )}
         <div className="left-section__header">
           <div className="line" />
           <h1 className="ten-du-an">{data.tenduan}</h1>
