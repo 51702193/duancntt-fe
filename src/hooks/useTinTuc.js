@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import useAPI from "./useAPI";
+import { TINTUC_STATUS } from "../constants";
 // import { useNavigate } from "react-router-dom";
 
 const useTinTuc = () => {
@@ -32,7 +33,18 @@ const useTinTuc = () => {
     });
   };
 
-  return { updateTinTuc, isLoadingUpdateTinTuc };
+  const getRibbon = (status) => {
+    switch (status) {
+      case TINTUC_STATUS.APPROVED:
+        return { text: TINTUC_STATUS.APPROVED, color: "blue" };
+      case TINTUC_STATUS.REJECTED:
+        return { text: TINTUC_STATUS.REJECTED, color: "red" };
+      default:
+        return { text: TINTUC_STATUS.SUBMITTED, color: "yellow" };
+    }
+  };
+
+  return { updateTinTuc, isLoadingUpdateTinTuc, getRibbon };
 };
 
 export default useTinTuc;

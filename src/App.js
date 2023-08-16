@@ -18,6 +18,8 @@ import TopNav from "./components/TopNav";
 import useUser from "./hooks/useUser";
 import ViewDetails from "./containers/ViewDetails";
 
+import "./App.scss";
+
 const router = (props) => {
   return createBrowserRouter(
     createRoutesFromElements(

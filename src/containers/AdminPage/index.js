@@ -5,6 +5,7 @@ import "./styles.scss";
 import { useSearchParams } from "react-router-dom";
 import ListDuAn from "../../components/ListDuAn";
 import SearchBanner from "../../components/SearchBanner";
+import { TINTUC_STATUS } from "../../constants";
 
 const { Content } = Layout;
 
@@ -23,7 +24,14 @@ function AdminPage({ isAdmin }) {
           <h2 className="title">Danh sách dự án</h2>
         </div>
         <div className="dailynews-banner__body">
-          <ListDuAn isAdmin={isAdmin} filter={{ ...filter, pageSize: 99 }} />
+          <ListDuAn
+            isAdmin={isAdmin}
+            filter={{
+              ...filter,
+              pageSize: 99,
+              status: TINTUC_STATUS.SUBMITTED,
+            }}
+          />
         </div>
         {/* <div className="dailynews-banner__footer">
           <Pagination

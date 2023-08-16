@@ -31,12 +31,12 @@ const HotNews = ({ autoplay }) => {
                   Con người với một diện mạo mới mẻ và tinh thần hứng khởi, sẵn
                   sàng cho những trải nghiệm tưởng không thể mà lại là có thể.
                 </div>
-                <a href="/view-all" className="link">
+                <a href="/cong-dong-du-an" className="link">
                   KHÁM PHÁ DỰ ÁN
                 </a>
               </Col>
               <Col offset={1} span={15}>
-                <a href="/view-all">
+                <a href="/cong-dong-du-an">
                   <img
                     style={{ width: "100%", height: "520px" }}
                     src="https://storage.googleapis.com/vinhomes-data-01/styles/images_870_x_530/public/2021_02/Secton 1 (Headbanner)_2.jpg?itok=XlBvEIRS"
@@ -58,7 +58,7 @@ const HotNews = ({ autoplay }) => {
                   Con người với một diện mạo mới mẻ và tinh thần hứng khởi, sẵn
                   sàng cho những trải nghiệm tưởng không thể mà lại là có thể.
                 </div>
-                <a href="/view-all" className="link">
+                <a href="/cong-dong-du-an" className="link">
                   KHÁM PHÁ DỰ ÁN
                 </a>
               </Col>

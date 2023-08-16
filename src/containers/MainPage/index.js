@@ -7,6 +7,7 @@ import HotNews from "./HotNews";
 import useAPI from "../../hooks/useAPI";
 import ListDuAn from "../../components/ListDuAn";
 import SearchBanner from "../../components/SearchBanner";
+import { TINTUC_STATUS } from "../../constants";
 
 const { Content } = Layout;
 
@@ -17,14 +18,18 @@ function MainPage() {
         <SearchBanner />
       </div>
 
-      <HotNews autoplay />
+      <HotNews />
 
       <div className="dailynews-banner">
         <div className="dailynews-banner__top">
           <h2 className="title">Bất động sản dành cho bạn</h2>
         </div>
         <div className="dailynews-banner__body">
-          <ListDuAn />
+          <ListDuAn
+            filter={{
+              status: TINTUC_STATUS.APPROVED,
+            }}
+          />
         </div>
         <div className="dailynews-banner__footer">
           <a href="/cong-dong-du-an">
