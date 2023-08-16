@@ -3,10 +3,26 @@ import { memo } from "react";
 
 import "./styles.scss";
 import ListDuAn from "../../components/ListDuAn";
+import { toast } from "react-toastify";
+import { Navigate } from "react-router-dom";
 
 const { Content } = Layout;
 
-function OwnerPage({ userMail }) {
+function OwnerPage({ authUser, isLoadingFetchAuthUser, userMail }) {
+  if (!authUser && !isLoadingFetchAuthUser) {
+    toast.error("Bạn hãy đăng nhập để trải nghiệm tính năng nha!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+    return <Navigate to="/" replace />;
+  }
   return (
     <Content className="view-all-page">
       <div className="dailynews-banner">
