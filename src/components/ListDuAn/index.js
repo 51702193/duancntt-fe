@@ -24,7 +24,7 @@ const ListDuAn = ({ filter, isAdmin }) => {
 
   return isLoadingListDuAn ? (
     <Spin />
-  ) : ListDuAn.length === 0 ? (
+  ) : (ListDuAn || []).length === 0 ? (
     <div style={{ fontSize: "25px", fontWeight: 600 }}>
       Hiện không có tin tức
     </div>

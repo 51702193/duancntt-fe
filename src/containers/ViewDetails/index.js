@@ -87,13 +87,28 @@ const ViewDetails = ({ isAdmin }) => {
           <div className="line" />
         </div>
         <div className="left-section__location-group">
-          <a className="location" href="/">
+          <a
+            className="location"
+            href={`/cong-dong-du-an?filter=${btoa(
+              JSON.stringify({ province: data.province.provinceId })
+            )}`}
+          >
             {data.province.province}
           </a>
-          <a className="location" href="/">
+          <a
+            className="location"
+            href={`/cong-dong-du-an?filter=${btoa(
+              JSON.stringify({ district: data.district.districtId })
+            )}`}
+          >
             {data.district.district}
           </a>
-          <a className="location" href="/">
+          <a
+            className="location"
+            href={`/cong-dong-du-an?filter=${btoa(
+              JSON.stringify({ ward: data.ward.wardId })
+            )}`}
+          >
             {data.ward.ward}
           </a>
         </div>
