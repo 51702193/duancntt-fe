@@ -42,10 +42,14 @@ const TopNav = ({ authUser, isLoadingFetchAuthUser, isAdmin }) => {
   const items = [
     {
       key: "DropdownTopNav-1",
-      label: <span onClick={googleLogin}>Đổi tài khoản</span>,
+      label: <a href="/bai-dang-cua-ban">Bài đăng của bạn</a>,
     },
     {
       key: "DropdownTopNav-2",
+      label: <span onClick={googleLogin}>Đổi tài khoản</span>,
+    },
+    {
+      key: "DropdownTopNav-3",
       label: (
         <span
           onClick={() => {

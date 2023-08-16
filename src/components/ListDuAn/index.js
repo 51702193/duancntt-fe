@@ -6,7 +6,7 @@ import "./styles.scss";
 import useTinTuc from "../../hooks/useTinTuc";
 import { TINTUC_STATUS } from "../../constants";
 
-const ListDuAn = ({ filter, isAdmin, isOwner }) => {
+const ListDuAn = ({ filter, isAdmin, isOwnerView }) => {
   const [{ isLoading: isLoadingListDuAn, data: ListDuAn = [] }, onGetListDuAn] =
     useAPI({
       url: "/list-du-an",
@@ -32,7 +32,7 @@ const ListDuAn = ({ filter, isAdmin, isOwner }) => {
 
       return (
         <Badge.Ribbon
-          style={isOwner || isAdmin ? {} : { display: "none" }}
+          style={isOwnerView || isAdmin ? {} : { display: "none" }}
           text={ribbon.text}
           color={ribbon.color}
         >

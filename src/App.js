@@ -19,6 +19,7 @@ import useUser from "./hooks/useUser";
 import ViewDetails from "./containers/ViewDetails";
 
 import "./App.scss";
+import OwnerPage from "./containers/OwnerPage";
 
 const router = (props) => {
   return createBrowserRouter(
@@ -29,6 +30,7 @@ const router = (props) => {
         <Route path="/duan/:id" element={<ViewDetails {...props} />} />
         <Route path="/admin" element={<AdminPage {...props} />} />
         <Route path="/dang-tin-tuc" element={<PostNews {...props} />} />
+        <Route path="/bai-dang-cua-ban" element={<OwnerPage {...props} />} />
         <Route path="*" element={<div>404 not found</div>} />
       </>
     )
@@ -36,7 +38,7 @@ const router = (props) => {
 };
 
 const App = memo(() => {
-  const { isLoadingFetchAuthUser, authUser, isAdmin } = useUser();
+  const { isLoadingFetchAuthUser, authUser, isAdmin, userMail } = useUser();
 
   return (
     <>
@@ -47,7 +49,12 @@ const App = memo(() => {
       />
       <main className="main">
         <RouterProvider
-          router={router({ isAdmin, authUser, isLoadingFetchAuthUser })}
+          router={router({
+            isAdmin,
+            authUser,
+            isLoadingFetchAuthUser,
+            userMail,
+          })}
         />
       </main>
     </>

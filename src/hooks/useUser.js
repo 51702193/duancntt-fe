@@ -6,8 +6,9 @@ const useUser = () => {
   const { isLoading: isLoadingFetchAuthUser, data: authUser } = useFetch(url);
 
   const isAdmin = authUser?.email === "51702193@student.tdtu.edu.vn";
+  const userMail = authUser?.email;
 
-  return { isLoadingFetchAuthUser, authUser, isAdmin };
+  return { isLoadingFetchAuthUser, authUser, isAdmin, userMail };
 };
 
 export default useUser;
