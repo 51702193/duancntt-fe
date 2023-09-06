@@ -5,10 +5,10 @@ import { SearchOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
-const SearchBanner = ({ onChange }) => {
-  const [curProvince, setCurProvince] = useState(null);
-  const [curDistrict, setCurDistrict] = useState(null);
-  const [curWard, setCurWard] = useState(null);
+const SearchBanner = ({ onChange, filter }) => {
+  const [curProvince, setCurProvince] = useState(filter?.province);
+  const [curDistrict, setCurDistrict] = useState(filter?.district);
+  const [curWard, setCurWard] = useState(filter?.ward);
 
   const [
     { isLoading: isLoadingProvincesData, data: provinces = [] },

@@ -16,7 +16,7 @@ function ViewAll() {
   return (
     <Content className="view-all-page">
       <div className="home-banner">
-        <SearchBanner />
+        <SearchBanner filter={filter} />
       </div>
 
       <div className="dailynews-banner">
