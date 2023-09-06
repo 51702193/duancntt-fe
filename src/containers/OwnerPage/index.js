@@ -1,4 +1,4 @@
-import { Layout } from "antd";
+import { Layout, Spin } from "antd";
 import { memo } from "react";
 
 import "./styles.scss";
@@ -23,6 +23,7 @@ function OwnerPage({ authUser, isLoadingFetchAuthUser, userMail }) {
 
     return <Navigate to="/" replace />;
   }
+
   return (
     <Content className="view-all-page">
       <div className="dailynews-banner">
@@ -30,14 +31,20 @@ function OwnerPage({ authUser, isLoadingFetchAuthUser, userMail }) {
           <h2 className="title">Danh sách dự án của bạn</h2>
         </div>
         <div className="dailynews-banner__body">
-          <ListDuAn
-            userMail={userMail}
-            isOwnerView
-            filter={{
-              user: userMail,
-              pageSize: 99,
-            }}
-          />
+          {isLoadingFetchAuthUser ? (
+            <section className="loading-screen">
+              <Spin size="large" />
+            </section>
+          ) : (
+            <ListDuAn
+              userMail={userMail}
+              isOwnerView
+              filter={{
+                user: userMail,
+                pageSize: 99,
+              }}
+            />
+          )}
         </div>
       </div>
     </Content>

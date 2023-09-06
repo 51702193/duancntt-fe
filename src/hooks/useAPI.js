@@ -33,7 +33,7 @@ const useAPI = ({ url, method }) => {
         params: data,
       })
       .then(function (response) {
-        setData({ data: response?.data, isLoading: false });
+        setData({ data: response?.data, isLoading: false, status: 200 });
       })
       .catch(function (error) {
         setData({ data: null, isLoading: false, error });
@@ -47,9 +47,15 @@ const useAPI = ({ url, method }) => {
       })
       .then(function (response) {
         if (callback) {
-          callback();
+          callback(true);
         }
-        setData({ data: response?.data, isLoading: false });
+        setData({ data: response?.data, isLoading: false, status: 404 });
+      })
+      .catch((error) => {
+        if (callback) {
+          callback(false);
+        }
+        setData({ data: null, isLoading: false, status: 404, error });
       });
   };
 

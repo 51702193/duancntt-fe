@@ -9,9 +9,15 @@ import { uid } from "uid";
 import { TINTUC_STATUS } from "../../constants";
 import useTinTuc from "../../hooks/useTinTuc";
 
-const ViewDetails = ({ isAdmin, isOwner }) => {
+const ViewDetails = ({ isAdmin, userMail }) => {
   const { id } = useParams();
-  const { isLoadingUpdateTinTuc, updateTinTuc, getRibbon } = useTinTuc();
+  const {
+    isLoadingUpdateTinTuc,
+    isLoadingDeleteTinTuc,
+    updateTinTuc,
+    deleteTinTuc,
+    getRibbon,
+  } = useTinTuc();
 
   const [{ isLoading, data }, onGetData] = useAPI({
     url: `/du-an?id=${id}`,
@@ -21,6 +27,7 @@ const ViewDetails = ({ isAdmin, isOwner }) => {
     onGetData();
   }, []);
 
+  const isOwner = data?.user === userMail;
   const ribbon = getRibbon(data?.status);
 
   if (isLoading) {
@@ -55,41 +62,52 @@ const ViewDetails = ({ isAdmin, isOwner }) => {
         color={ribbon.color}
       >
         <section className="left-section">
-          {isAdmin && (
-            <div className="left-section__button-group">
+          <div className="left-section__button-group">
+            {isAdmin && (
+              <>
+                <Button
+                  type="primary"
+                  loading={isLoadingUpdateTinTuc}
+                  disabled={data.status === TINTUC_STATUS.APPROVED}
+                  onClick={() =>
+                    updateTinTuc({
+                      status: TINTUC_STATUS.APPROVED,
+                      id: id,
+                    })
+                  }
+                >
+                  Approve
+                </Button>
+                <Button
+                  type="primary"
+                  danger
+                  loading={isLoadingUpdateTinTuc}
+                  disabled={data.status === TINTUC_STATUS.REJECTED}
+                  onClick={() =>
+                    updateTinTuc({
+                      status: TINTUC_STATUS.REJECTED,
+                      id: id,
+                    })
+                  }
+                >
+                  Reject
+                </Button>
+              </>
+            )}
+            {isOwner && (
               <Button
                 type="primary"
-                disabled={
-                  isLoadingUpdateTinTuc ||
-                  data.status === TINTUC_STATUS.APPROVED
-                }
+                loading={isLoadingDeleteTinTuc}
                 onClick={() =>
-                  updateTinTuc({
-                    status: TINTUC_STATUS.APPROVED,
+                  deleteTinTuc({
                     id: id,
                   })
                 }
               >
-                Approve
+                Xóa tin tức
               </Button>
-              <Button
-                type="primary"
-                danger
-                disabled={
-                  isLoadingUpdateTinTuc ||
-                  data.status === TINTUC_STATUS.REJECTED
-                }
-                onClick={() =>
-                  updateTinTuc({
-                    status: TINTUC_STATUS.REJECTED,
-                    id: id,
-                  })
-                }
-              >
-                Reject
-              </Button>
-            </div>
-          )}
+            )}
+          </div>
           <div className="left-section__header">
             <div className="line" />
             <h1 className="ten-du-an">{data.tenduan}</h1>

@@ -84,6 +84,13 @@ const TopNav = ({ authUser, isLoadingFetchAuthUser, isAdmin }) => {
         >
           Cộng đồng dự án
         </a>
+        <a
+          rel="nofollow"
+          className="flex-vertical ht_relative ht_transition nav-link"
+          href="/bai-dang-cua-ban"
+        >
+          Bài đăng của bạn
+        </a>
         {isAdmin && (
           <a
             rel="nofollow"
