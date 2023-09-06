@@ -6,9 +6,10 @@ import { SearchOutlined } from "@ant-design/icons";
 const { Option } = Select;
 
 const SearchBanner = ({ onChange, filter }) => {
-  const [curProvince, setCurProvince] = useState(filter?.province);
-  const [curDistrict, setCurDistrict] = useState(filter?.district);
-  const [curWard, setCurWard] = useState(filter?.ward);
+  const [curProvince, setCurProvince] = useState(null);
+  const [curDistrict, setCurDistrict] = useState(null);
+  const [curWard, setCurWard] = useState(null);
+  const [isFirstTime, setFirstTime] = useState(true);
 
   const [
     { isLoading: isLoadingProvincesData, data: provinces = [] },
@@ -26,6 +27,20 @@ const SearchBanner = ({ onChange, filter }) => {
     useAPI({
       url: "/wards",
     });
+
+  useEffect(() => {
+    if (
+      provinces?.length !== 0 &&
+      districts?.length !== 0 &&
+      wards?.length !== 0 &&
+      isFirstTime
+    ) {
+      setFirstTime(false);
+      setCurProvince(filter?.province);
+      setCurDistrict(filter?.district);
+      setCurWard(filter?.ward);
+    }
+  }, [provinces, districts, wards, isFirstTime]);
 
   useEffect(() => {
     onGetProvinceList();
