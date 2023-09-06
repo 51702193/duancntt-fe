@@ -1,12 +1,16 @@
 import axios from "axios";
 import { useState } from "react";
 
+import configs from "../configs";
+
 const useAPI = ({ url, method }) => {
   const [data, setData] = useState({ isLoading: false });
 
   const instance = axios.create({
-    baseURL: "https://dacntt2-n092-be.netlify.app/.netlify/functions/api",
-    // baseURL: "http://localhost:5000/.netlify/functions/api",
+    baseURL:
+      configs.MODE === "production"
+        ? "https://dacntt2-n092-be.netlify.app/.netlify/functions/api"
+        : "http://localhost:5000/.netlify/functions/api",
   });
 
   instance.interceptors.request.use(

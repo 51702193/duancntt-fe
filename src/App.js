@@ -37,7 +37,7 @@ const router = (props) => {
   );
 };
 
-const App = memo(() => {
+const App = memo(({ configs }) => {
   const { isLoadingFetchAuthUser, authUser, isAdmin, userMail } = useUser();
 
   return (

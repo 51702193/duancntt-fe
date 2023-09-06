@@ -12,11 +12,13 @@ import "./index.scss";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import App from "./App";
 
+import configs from "./configs";
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
   <ErrorBoundary fallback={<div>Something went wrong</div>}>
     <GoogleOAuthProvider clientId="188789041069-5p15dp7j6akls94ma73mb3v0gleptbpi.apps.googleusercontent.com">
-      <App />
+      <App configs={configs} />
     </GoogleOAuthProvider>
     <ToastContainer />
   </ErrorBoundary>
