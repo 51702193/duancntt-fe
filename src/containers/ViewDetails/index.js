@@ -152,12 +152,7 @@ const ViewDetails = ({ isAdmin, userMail }) => {
         <section className="right-section">
           <Carousel className="carousel-container" autoplay>
             {data.images.map((i) => (
-              <img
-                key={uid()}
-                alt="img"
-                className="image-carousel"
-                src={i}
-              ></img>
+              <img key={uid()} alt="img" className="image-carousel" src={i} />
             ))}
           </Carousel>
         </section>
