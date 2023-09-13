@@ -119,7 +119,7 @@ const SearchBanner = ({ onChange, filter }) => {
           <Select
             placeholder="Chọn Quận Huyện"
             onChange={handleSetDistrict}
-            disabled={curProvince === null || isLoadingDistrictsData}
+            disabled={!curProvince || isLoadingDistrictsData}
             value={curDistrict}
           >
             {districts?.map((district) => (
@@ -139,7 +139,7 @@ const SearchBanner = ({ onChange, filter }) => {
           <Select
             placeholder="Chọn Phường - Xã"
             onChange={handleSetWard}
-            disabled={curDistrict === null || isLoadingWardsData}
+            disabled={!curDistrict || isLoadingWardsData}
             value={curWard}
           >
             {wards?.map((ward) => (

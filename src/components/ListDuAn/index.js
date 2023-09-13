@@ -35,8 +35,9 @@ const ListDuAn = ({ filter, isAdmin, isOwnerView }) => {
           style={isOwnerView || isAdmin ? {} : { display: "none" }}
           text={ribbon.text}
           color={ribbon.color}
+          key={tintuc._id}
         >
-          <div className="home-product" key={tintuc._id}>
+          <div className="home-product">
             <div className="product-thumb">
               <a href={ViewDetailsUrl}>
                 <img
