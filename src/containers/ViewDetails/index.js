@@ -4,7 +4,7 @@ import { Spin } from "antd";
 
 import "./styles.scss";
 import useAPI from "../../hooks/useAPI";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { uid } from "uid";
 import { TINTUC_STATUS } from "../../constants";
 import useTinTuc from "../../hooks/useTinTuc";
@@ -125,7 +125,10 @@ const ViewDetails = ({ isAdmin, userMail }) => {
             <a
               className="location"
               href={`/cong-dong-du-an?filter=${btoa(
-                JSON.stringify({ district: data.district.districtId })
+                JSON.stringify({
+                  province: data.province.provinceId,
+                  district: data.district.districtId,
+                })
               )}`}
             >
               {data.district.district}
@@ -133,7 +136,11 @@ const ViewDetails = ({ isAdmin, userMail }) => {
             <a
               className="location"
               href={`/cong-dong-du-an?filter=${btoa(
-                JSON.stringify({ ward: data.ward.wardId })
+                JSON.stringify({
+                  province: data.province.provinceId,
+                  district: data.district.districtId,
+                  ward: data.ward.wardId,
+                })
               )}`}
             >
               {data.ward.ward}

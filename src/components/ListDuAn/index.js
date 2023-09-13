@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import useAPI from "../../hooks/useAPI";
 import { Badge, Button, Spin } from "antd";
 
